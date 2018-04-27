@@ -1,11 +1,12 @@
 ladon-io
 ========
 
-## About
+### About ###
 
-## How it Works
+### How it Works ###
 
-## Motivation
+### Motivation ###
+
 This project was created for my university course conclusion work at computer engineering
 
-## Example
+### Example ###

@@ -12,6 +12,9 @@ sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade
 # Installing miscellaneous packages
 sudo apt-get install -y vim git
 
+# Installing necessary packages
+sudo apt-get install -y mosquitto mosquitto-clients
+
 #########################################
 # Installing PM2
 #########################################

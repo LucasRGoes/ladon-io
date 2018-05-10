@@ -64,7 +64,7 @@ while True:
 
 	# Saves frame
 	fileName = "{}.png".format(time.time())
-	cv2.imwrite("captures/{}".format(directoryName, fileName), frame)
+	cv2.imwrite("captures/{}".format(fileName), frame)
 
 	# Sleeps for the chosen number of minutes
 	time.sleep(args.frequency * 60)

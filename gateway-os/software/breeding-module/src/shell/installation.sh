@@ -219,6 +219,7 @@ cp -r ../../../tongue-module $folderFiles
 cp files/etc/ladon/pm2/instances-ladon.json $folderEtc/pm2
 
 echo -e "$prefix Starting modules ..."
+pip3 install python-kafka
 pm2 start $folderEtc/pm2/instances-ladon.json
 
 pm2 save

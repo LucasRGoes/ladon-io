@@ -1,30 +1,41 @@
 ## IMPORTS ##
-import json
+import json										# Json: is a lightweight data interchange format inspired by JavaScript object literal syntax
+import logging									# Logging: provides a set of convenience functions for simple logging usage
 
-from kafka import KafkaConsumer
+from kafka import KafkaConsumer					# KafkaConsumer: is a high-level, asynchronous message consumer
+from BucketSupervisor import BucketSupervisor	# BucketSupervisor: saves buckets by supervising their sizes
 
-## TESTING ##
+## MAIN ##
 
-# Opens image
-photoFile = open("/home/lucas/Downloads/Teste2.png", "wb")
+# Configures logging module
+logging.basicConfig(format='%(asctime)s [%(levelname)s] [%(name)s]: %(message)s', level=20)
+logger = logging.getLogger("KafkaFileWrapper")
+logger.info("started")
 
-# Creates a buffer
-photoBuffer = {}
+# Creates a BucketSupervisor and start it
+supervisor = BucketSupervisor()
+supervisor.start()
 
-# Creates a consumer
+# Creates a Kafka consumer
 consumer = KafkaConsumer(
-			'ladon',
-			bootstrap_servers="orcinus",
-			value_deserializer=lambda v: json.loads(v.decode('utf-8'))
-		   )
+				'ladon',
+				bootstrap_servers = "orcinus",
+				value_deserializer = lambda v: json.loads(v.decode("utf-8"))
+			)
 
-# Receives message
+# Receives message from Kafka broker
 for msg in consumer:
 
-	# Gets and converts chunk
-	chunk = bytes(msg.value['chunk']['__value__'])
+	# Get package
+	package = msg.value
 
-	# Writing to file
-	photoFile.write(chunk)
+	# Verify package type
+	if package["type"] == "file":
+		# Updates value
+		package["value"] = bytearray(package["value"]["__value__"])
 
-photoFile.close()
+		# Adds package to bucket
+		supervisor.addPackageToBucket(package)
+
+	else:
+		logger.info("message arrived: {}".format(package))

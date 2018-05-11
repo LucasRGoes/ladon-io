@@ -17,7 +17,7 @@
       "cwd": "/var/log/ladon",
       "script": "/usr/bin/python3.5",
       "args": [
-        "/usr/share/ladon/tongue-module/src/python/TonguePipeline.py"
+        "/usr/share/ladon/tongue-module/src/main.py"
       ],
       "node_args": [],
       "log_date_format": "YYYY-MM-DD HH:mm Z",

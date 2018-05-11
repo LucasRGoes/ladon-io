@@ -17,7 +17,9 @@ args = argumentParserFactory().parse_args()
 
 # Configures logging module
 logging.basicConfig(format='%(asctime)s [%(levelname)s] [%(name)s]: %(message)s', level=args.verbosity * 10)
+logger = logging.getLogger("BrainModule")
 
+logger.info("started")
 while True:
 
 	# Instantiates a VideoCaptureWrapper object for frame capturing
@@ -31,14 +33,16 @@ while True:
 		wrapper.close()
 
 		# Gets frame path and saves it
-		fullPath = "{0}/captures/{1}.png".format(os.getcwd(), math.floor(time.time()))
+		now = math.floor(time.time())
+		fullPath = "{0}/captures/{1}.png".format(os.getcwd(), now)
 		cv2.imwrite(fullPath, frame)
 
 		# Builds the object to be published
 		package = {
 			"type": "file",
 			"description": "photo",
-			"value": fullPath 
+			"value": fullPath,
+			"timestamp": now
 		}
 
 		# Publishes to the MQTT broker

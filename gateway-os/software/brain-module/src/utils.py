@@ -17,5 +17,6 @@ def argumentParserFactory():
 	parser.add_argument("-c", "--camera", type=int, default=0, help="id of the camera to be used")
 	parser.add_argument("-f", "--frequency", type=int, default=30, help="the frequency of capture in minutes")
 	parser.add_argument("-a", "--attempts", type=int, default=5, help="the number of attempts on opening the camera")
+	parser.add_argument("-b", "--broker", type=str, default="localhost", help="the broker to connect to")
 
 	return parser

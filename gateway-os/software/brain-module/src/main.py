@@ -1,8 +1,11 @@
 ## IMPORTS ##
 import cv2								# OpenCV: usage ranges from interactive art, to mines inspection, stitching maps on the web or through advanced robotics
+import json 							# Json: is a lightweight data interchange format inspired by JavaScript object literal syntax
 import logging							# Logging: provides a set of convenience functions for simple logging usage
 import math								# Math: it provides access to the mathematical functions defined by the C standard
+import os 								# OS: this module provides a portable way of using operating system dependent functionality 
 import time								# Time: provides various time-related functions
+import paho.mqtt.publish as publish		# Paho.Mqtt.Publish: provides a client class which enable applications to publish to an MQTT broker
 
 from utils import argumentParserFactory	# argumentParserFactory: argument parser for the module
 from capture import VideoCaptureWrapper	# VideoCaptureWrapper: wrapper for OpenCV VideoCapture
@@ -27,9 +30,19 @@ while True:
 		frame = wrapper.captureFrame()
 		wrapper.close()
 
-		# Saves frame
-		fileName = "{}.png".format(math.floor(time.time()))
-		cv2.imwrite("captures/{}".format(fileName), frame)
+		# Gets frame path and saves it
+		fullPath = "{0}/captures/{1}.png".format(os.getcwd(), math.floor(time.time()))
+		cv2.imwrite(fullPath, frame)
+
+		# Builds the object to be published
+		package = {
+			"type": "file",
+			"description": "photo",
+			"value": fullPath 
+		}
+
+		# Publishes to the MQTT broker
+		publish.single("/gateway", json.dumps(package).encode("utf-8"), hostname=args.broker)
 
 	else:
 		# Closes VideoCaptureWrapper

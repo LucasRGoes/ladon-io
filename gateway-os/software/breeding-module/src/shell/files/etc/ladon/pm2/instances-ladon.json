@@ -1,11 +1,11 @@
 {
   "apps": [
     {
-      "name": "brain-module",
+      "name": "tongue-module",
       "cwd": "/var/log/ladon",
       "script": "/usr/bin/python3.5",
       "args": [
-        "/usr/share/ladon/brain-module/src/main.py"
+        "/usr/share/ladon/tongue-module/src/main.py"
       ],
       "node_args": [],
       "log_date_format": "YYYY-MM-DD HH:mm Z",
@@ -13,11 +13,11 @@
       "exec_mode": "fork"
     },
     {
-      "name": "tongue-module",
+      "name": "brain-module",
       "cwd": "/var/log/ladon",
       "script": "/usr/bin/python3.5",
       "args": [
-        "/usr/share/ladon/tongue-module/src/main.py"
+        "/usr/share/ladon/brain-module/src/main.py"
       ],
       "node_args": [],
       "log_date_format": "YYYY-MM-DD HH:mm Z",

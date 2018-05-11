@@ -46,7 +46,7 @@ while True:
 		}
 
 		# Publishes to the MQTT broker
-		publish.single("/gateway", json.dumps(package).encode("utf-8"), hostname=args.broker)
+		publish.single("/kafka", json.dumps(package).encode("utf-8"), hostname=args.broker)
 
 	else:
 		# Closes VideoCaptureWrapper

@@ -48,10 +48,10 @@ fi
 
 echo -e "$prefix Updating hostname, motd, default user/passwd, root passwd ..."
 
-read -e -p "Enter hostname (default: $newHostName) : " -i "$newHostName" newHostName
-read -e -p "Enter user (default: $defaultUser) : " -i "$defaultUser" defaultUser
-read -e -p "Enter new user default password (default: $defaultPassword) : " -i "$defaultPassword" defaultPassword
-read -e -p "Enter root new password (default: $rootPassword) : " -i "$rootPassword" rootPassword
+read -p "Enter hostname (default: $newHostName) : " -i "$newHostName" newHostName
+read -p "Enter user (default: $defaultUser) : " -i "$defaultUser" defaultUser
+read -p "Enter new user default password (default: $defaultPassword) : " -i "$defaultPassword" defaultPassword
+read -p "Enter root new password (default: $rootPassword) : " -i "$rootPassword" rootPassword
 
 echo -e "$prefix Creating and setting up user '$defaultUser' ..."
 id -u "$defaultUser" &> "/dev/null" || useradd "$defaultUser"
@@ -94,7 +94,7 @@ apt-get install -y htop vim git curl
 apt-get install -y mosquitto mosquitto-clients
 
 echo -e "$prefix Updating time and locale ..."
-locale-gen en_US en_US.UTF-8 pt_BR.UTF-8
+locale-gen en_US.UTF-8 pt_BR.UTF-8
 dpkg-reconfigure locales
 dpkg-reconfigure tzdata
 
@@ -210,6 +210,13 @@ cd ../../..
 rm -r opencv-build
 
 #########################################
+# Installing Other Python Modules
+#########################################
+echo -e "$prefix Installing python modules ..."
+pip3 install python-kafka
+pip3 install paho-mqtt
+
+#########################################
 # Starting Modules
 #########################################
 
@@ -219,7 +226,6 @@ cp -r ../../../tongue-module $folderFiles
 cp files/etc/ladon/pm2/instances-ladon.json $folderEtc/pm2
 
 echo -e "$prefix Starting modules ..."
-pip3 install python-kafka
 pm2 start $folderEtc/pm2/instances-ladon.json
 
 pm2 save

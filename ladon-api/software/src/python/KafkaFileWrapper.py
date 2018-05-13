@@ -19,7 +19,7 @@ supervisor.start()
 # Creates a Kafka consumer
 consumer = KafkaConsumer(
 				'ladon',
-				bootstrap_servers = "orcinus",
+				bootstrap_servers = "localhost",
 				value_deserializer = lambda v: json.loads(v.decode("utf-8"))
 			)
 
@@ -31,7 +31,7 @@ for msg in consumer:
 
 	# Verify package type
 	if package["type"] == "file":
-		# Updates value
+		# Deserializes value
 		package["value"] = bytearray(package["value"]["__value__"])
 
 		# Adds package to bucket

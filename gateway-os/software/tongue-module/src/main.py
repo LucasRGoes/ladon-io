@@ -4,6 +4,7 @@ import logging									# Logging: provides a set of convenience functions for si
 import paho.mqtt.subscribe as subscribe			# Paho.Mqtt.Subscribe: provides a client class which enable applications to subscribe to an MQTT broker
 
 from utils import argumentParserFactory			# argumentParserFactory: argument parser for the module
+from utils import LadonPackage					# LadonPackage: class representing a package to be sent over Kafka
 from communication import KafkaProducerWrapper	# KafkaProducerWrapper: wrapper for Kafka Producer
 
 ## MAIN ##
@@ -21,13 +22,25 @@ wrapper = KafkaProducerWrapper(args.kafka, args.kafka_topic)
 
 # Creates a callback for MQTT subscription
 def onMessage(client, userdata, message):
-	logger.info("message arrived: {}".format(message.payload))
+	
+	try:
+		# Deserializes message
+		package = json.loads(message.payload.decode("utf-8"))
 
-	# Deserializes message
-	package = json.loads(message.payload.decode("utf-8"))
+		# Adds topic parameters to message
+		_, path, id = message.topic.split("/")
+		package["path"] = path
+		package["id"] = id
 
-	# Sends package
-	wrapper.sendPackage(package)
+		# Creates the package
+		ladonPackage = LadonPackage(package)
+		logger.info("valid package arrived: {}".format(ladonPackage))
+
+		# Sends package
+		wrapper.sendPackage(ladonPackage.getPackage())
+
+	except Exception as e:
+		logger.warn("failure on onMessage: {}".format(e))
 
 # Subscribes to MQTT broker
 subscribe.callback(onMessage, args.mqtt_topic, hostname=args.broker)

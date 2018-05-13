@@ -1,0 +1,19 @@
+{
+  "apps": [
+    {
+      "name": "kafka-file-wrapper",
+      "cwd": "/var/log/ladon",
+      "script": "/usr/bin/python3.5",
+      "args": [
+        "/usr/share/ladon/kafka-file-wrapper/KafkaFileWrapper.py"
+      ],
+      "watch": [
+        "/usr/share/ladon/kafka-file-wrapper/KafkaFileWrapper.py"
+      ],
+      "node_args": [],
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "",
+      "exec_mode": "fork"
+    }
+  ]
+}

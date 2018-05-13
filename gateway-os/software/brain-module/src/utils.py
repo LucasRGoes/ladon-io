@@ -18,5 +18,7 @@ def argumentParserFactory():
 	parser.add_argument("-f", "--frequency", type=int, default=30, help="the frequency of capture in minutes")
 	parser.add_argument("-a", "--attempts", type=int, default=5, help="the number of attempts on opening the camera")
 	parser.add_argument("-b", "--broker", type=str, default="localhost", help="the broker to connect to")
+	parser.add_argument("-p", "--path", type=str, default="ladon", help="the custom path to be used on publishing")
+	parser.add_argument("-i", "--id", type=str, default="nZyLYVd9bBcfeuAm", help="the unique identifier for devices and gateways")
 
 	return parser

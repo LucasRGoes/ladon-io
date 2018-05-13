@@ -32,9 +32,22 @@ while True:
 		frame = wrapper.captureFrame()
 		wrapper.close()
 
+		# Stores the timestamp from the capture moment
+		timestamp = math.floor(time.time())
+
+		# Verify the last name from the captures folder to get the next number
+		fileNumber = 0
+		fileList = os.listdir("captures")
+		if fileList:
+			# Directory has images
+			sortedList = []
+			for fileName in map( lambda f: int(f.replace(".png", "")), fileList ):
+				sortedList.append(fileName)
+			sortedList.sort()
+			fileNumber = sortedList[-1] + 1
+
 		# Gets frame path and saves it
-		now = math.floor(time.time())
-		fullPath = "{0}/captures/{1}.png".format(os.getcwd(), now)
+		fullPath = "{0}/captures/{1}.png".format(os.getcwd(), fileNumber)
 		cv2.imwrite(fullPath, frame)
 
 		# Builds the object to be published
@@ -42,11 +55,11 @@ while True:
 			"type": "file",
 			"description": "photo",
 			"value": fullPath,
-			"timestamp": now
+			"timestamp": timestamp
 		}
 
 		# Publishes to the MQTT broker
-		publish.single("/kafka", json.dumps(package).encode("utf-8"), hostname=args.broker)
+		publish.single("/{0}/{1}".format(args.path, args.id), json.dumps(package).encode("utf-8"), hostname=args.broker)
 
 	else:
 		# Closes VideoCaptureWrapper

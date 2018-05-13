@@ -213,7 +213,7 @@ rm -r opencv-build
 # Installing Other Python Modules
 #########################################
 echo -e "$prefix Installing python modules ..."
-pip3 install python-kafka
+pip3 install kafka-python
 pip3 install paho-mqtt
 
 #########################################

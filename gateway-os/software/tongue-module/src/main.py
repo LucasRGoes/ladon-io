@@ -39,8 +39,8 @@ def onMessage(client, userdata, message):
 		# Sends package
 		wrapper.sendPackage(ladonPackage.getPackage())
 
-	except Exception as e:
-		logger.warn("failure on onMessage: {}".format(e))
+	except Exception as err:
+		logger.warn("failure on onMessage: {}".format(err))
 
 # Subscribes to MQTT broker
 subscribe.callback(onMessage, args.mqtt_topic, hostname=args.broker)

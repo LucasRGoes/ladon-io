@@ -39,7 +39,7 @@ class KafkaProducerWrapper:
 	# returns {boolean}: If the package was or wasn't sent
 	def sendPackage(self, package):
 
-		self.__logger.info("sending package...")
+		self.__logger.info("sending package to {}...".format(self.__topic))
 
 		# Verifies package type
 		if package["type"] == "file":
@@ -72,8 +72,8 @@ class KafkaProducerWrapper:
 				newFilePath = filePath.replace("captures", "sent")
 				os.rename(filePath, newFilePath)
 
-			except:
-				self.__logger.info("failure on sendPackage")
+			except Exception as err:
+				self.__logger.info("failure on sendPackage: {}".format(err))
 				return False
 
 		else:

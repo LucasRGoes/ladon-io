@@ -47,6 +47,7 @@ class BucketSupervisor(Thread):
 					bucket["lastSize"] = currentSize
 				else:
 					# If equals, save bucket to file
+					self.__logger.info("saving bucket {} to local storage".format(timestamp))
 					bucket["chunkBucket"].saveBucketAsFile("captures/{}.png".format(timestamp))
 
 					# Stores key to delete in toRemove

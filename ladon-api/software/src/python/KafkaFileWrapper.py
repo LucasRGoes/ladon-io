@@ -26,16 +26,21 @@ consumer = KafkaConsumer(
 # Receives message from Kafka broker
 for msg in consumer:
 
-	# Get package
-	package = msg.value
+	try:
 
-	# Verify package type
-	if package["type"] == "file":
-		# Deserializes value
-		package["value"] = bytearray(package["value"]["__value__"])
+		# Get package
+		package = msg.value
 
-		# Adds package to bucket
-		supervisor.addPackageToBucket(package)
+		# Verify package type
+		if package["type"] == "file":
+			# Deserializes value
+			package["value"] = bytearray(package["value"]["__value__"])
 
-	else:
-		logger.info("message arrived: {}".format(package))
+			# Adds package to bucket
+			supervisor.addPackageToBucket(package)
+
+		else:
+			logger.info("message arrived: {}".format(package))
+
+	except Exception as err:
+		logger.error("failure at KafkaConsumer: {}".format(err))

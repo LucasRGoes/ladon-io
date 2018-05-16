@@ -68,10 +68,6 @@ class KafkaProducerWrapper:
 
 				self.__logger.info("success on sendPackage")
 
-				# Moves file to sent dir
-				newFilePath = filePath.replace("captures", "sent")
-				os.rename(filePath, newFilePath)
-
 			except Exception as err:
 				self.__logger.info("failure on sendPackage: {}".format(err))
 				return False

@@ -77,7 +77,7 @@ class KafkaProducerWrapper:
 			result = future.get(timeout = 60)
 			self.__producer.flush()
 
-			if result == True:
+			if result:
 				self.__logger.info("success on sendPackage")
 			else:
 				self.__logger.info("failure on sendPackage")

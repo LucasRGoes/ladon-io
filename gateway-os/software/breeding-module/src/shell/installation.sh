@@ -195,6 +195,7 @@ cp ../../../files/etc/dphys-swapfile-opencv /etc/dphys-swapfile
 # Compiling with all four cores and installing OpenCV #
 make -j4
 make install
+ldconfig
 
 # Renaming OpenCV library
 mv /usr/local/lib/python3.5/dist-packages/cv2.cpython-35m-arm-linux-gnueabihf.so cv2.so

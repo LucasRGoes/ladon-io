@@ -1,3 +1,9 @@
+/*
+ * LadonManager
+ * 
+ * Ladon modules handler.
+ */
+
 /* LIBRARIES */
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
@@ -5,93 +11,65 @@
 /* DEFINES */
 #define WIFI_SSID		"Goes"
 #define WIFI_PSK		"23523373"
-
-#define MQTT_BROKER		"raspberrypi.local"
-#define MQTT_CLIENT_ID	"device-os"
-
 #define HOSTNAME		"deviceos"
 
-/* FUNCTIONS */
-void mqttReconnect(void);
+#define MQTT_BROKER		"lgateway.local"
+#define MQTT_CLIENT_ID	"device-os"
 
-/* VARIABLES */
-WiFiClient espClient;
-PubSubClient mqttClient(espClient);
+#define POOLING_TIME	60000 // milliseconds
 
+#define DEVICE_HASH		"vzyJYkThrw9u9gP5"
+
+/* MODULES */
+#include "LadonConnection.h"
+#include "LadonCommunication.h"
+#include "LadonSensor.h"
+
+/* SETUP */
 void setup() {
 
 	// Serial Setup
 	Serial.begin(115200);
 
-	// WiFi Setup
-	delay(10);
-	Serial.print("\n\n");
-	Serial.print("Connecting to ");
-	Serial.print(WIFI_SSID);
-	Serial.print(" ");
-
-	// Setting mode and hostname
-	WiFi.mode(WIFI_STA);
-	WiFi.setAutoReconnect(true);
-	WiFi.hostname(HOSTNAME);
-
-	// Connecting to WiFi AP
-	WiFi.begin(WIFI_SSID, WIFI_PSK);
-
-	// Doesn't exit until connected
-	while (WiFi.status() != WL_CONNECTED) {
-		delay(500);
-		Serial.print(".");
-	}
-
-	Serial.println("");
-	Serial.println("WiFi connected");  
-	Serial.print("IP address: ");
-	Serial.println(WiFi.localIP());
-	Serial.print("\n");
-
-	// MQTT Setup
-	mqttClient.setServer(MQTT_BROKER, 1883);
-	//mqttClient.setCallback(callback);
+	// Starts connection, communication and sensor modules
+	startConnection();
+	startCommunication();
+	startSensor();
 
 }
 
+/* LOOP */
 void loop() {
 
-	// Handling MQTT connection
-	if (!mqttClient.connected()) {
-		mqttReconnect();
+	handleCommunication();
+
+	// Verify if the pooling time has been reached
+	unsigned long now = millis();
+	if(now - lastSensorReading >= POOLING_TIME || lastSensorReading == 0UL) {
+
+		// Gets reading
+		float reading = readSensor();
+
+		// Creates topic
+		String topic = "/ladon/";
+		topic += String(DEVICE_HASH);
+
+		// Creates JSON string and publishes it
+		String toPublish = "{\"type\":\"number\",\"description\":\"temperature\",\"value\":"
+							+ String(reading) + "}";
+
+		Serial.println("Temperature: " + String(reading));
+		mqttClient.publish(topic.c_str(), toPublish.c_str());
+
+		lastSensorReading = now;
+
+	} else {
+
+		// Verify if millis has reseted
+		if(now - lastSensorReading < 0) { lastSensorReading = 0UL; }
+
 	}
-	mqttClient.loop();
 
-	Serial.println("Publishing...");
-	mqttClient.publish("Teste", "Teste");
-
-	// Final delay
-	delay(5000);
-
-}
-
-void mqttReconnect(void) {
-
-  // Loop until we're reconnected
-  while (!mqttClient.connected()) {
-
-    Serial.print("Attempting MQTT connection...");
-
-    // Attempt to connect
-    if (mqttClient.connect(MQTT_CLIENT_ID)) {
-      Serial.println("Connected to MQTT broker");
-    } else {
-
-      Serial.print("Failed to connect to MQTT broker, rc=");
-      Serial.print(mqttClient.state());
-      Serial.println(", trying again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
-
-    }
-
-  }
+	delay(1000);
 
 }

@@ -1,5 +1,7 @@
 ## IMPORTS ##
 import argparse	# Argparse: the recommended command-line parsing module
+import math		# Math: it provides access to the mathematical functions defined by the C standard
+import time		# Time: provides various time-related functions
 
 # argumentParserFactory
 # ------------
@@ -60,7 +62,7 @@ class LadonPackage:
 		if package["timestamp"]:
 			self.timestamp = package["timestamp"]
 		else:
-			raise ValueError("timestamp")
+			self.timestamp = math.floor(time.time())
 
 	# __str__
 	# --------

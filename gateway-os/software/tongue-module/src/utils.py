@@ -34,32 +34,32 @@ class LadonPackage:
 	def __init__(self, package):
 
 		# Verifying parameters
-		if package["path"] and type(package["path"]) is str:
+		if "path" in package and type(package["path"]) is str:
 			self.path = package["path"]
 		else:
 			raise ValueError("path")
 
-		if package["id"] and type(package["id"]) is str:
+		if "id" in package and type(package["id"]) is str:
 			self.id = package["id"]
 		else:
 			raise ValueError("id")
 
-		if package["type"] and type(package["type"]) is str:
+		if "type" in package and type(package["type"]) is str:
 			self.type = package["type"]
 		else:
 			raise ValueError("type")
 
-		if package["description"] and type(package["description"]) is str:
+		if "description" in package and type(package["description"]) is str:
 			self.description = package["description"]
 		else:
 			raise ValueError("description")
 
-		if package["value"]:
+		if "value" in package:
 			self.value = package["value"]
 		else:
 			raise ValueError("value")
 
-		if package["timestamp"]:
+		if "timestamp" in package:
 			self.timestamp = package["timestamp"]
 		else:
 			self.timestamp = math.floor(time.time())

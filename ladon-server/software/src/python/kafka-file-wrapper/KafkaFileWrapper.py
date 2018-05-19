@@ -19,41 +19,42 @@ logger.info("started")
 supervisor = BucketSupervisor()
 supervisor.start()
 
-# Creates a Kafka consumer
-consumer = KafkaConsumer(
-				'ladon',
-				bootstrap_servers = "localhost",
-				value_deserializer = lambda v: json.loads(v.decode("utf-8"))
-			)
-
 # Creates a MongoWrapper
 mongo = MongoWrapper()
 
 # Receives message from Kafka broker
-for msg in consumer:
+while(True):
 
-	# Stores the timestamp from the arrival moment
-	timestamp = math.floor(time.time())
+	# Creates a Kafka consumer
+	consumer = KafkaConsumer(
+					'ladon',
+					#bootstrap_servers = "localhost",
+					bootstrap_servers = "ladonio.ddns.net",
+					value_deserializer = lambda v: json.loads(v.decode("utf-8"))
+				)
 
 	try:
 
-		# Get package
-		package = msg.value
+		for msg in consumer:
 
-		# Verify package type
-		if package["type"] == "file":
-			# Deserializes value
-			package["value"] = bytearray(package["value"]["__value__"])
+			# Get package and stores arrival moment
+			package = msg.value
+			package["arrival"] = math.floor(time.time())
 
-			# Adds package to bucket
-			supervisor.addPackageToBucket(package)
+			# Verify package type
+			if package["type"] == "file":
+				# Deserializes value
+				package["value"] = bytearray(package["value"]["__value__"])
 
-		else:
+				# Adds package to bucket
+				supervisor.addPackageToBucket(package)
 
-			# Stores arrival moment at package
-			package["arrival"] = timestamp
-			logger.info("package arrived: {}".format(package))
-			mongo.storePackage(package)
+			else:
+				logger.info("package arrived: {}".format(package))
+				mongo.storePackage(package)
 
 	except Exception as err:
 		logger.error("failure at KafkaConsumer: {}".format(err))
+
+	# Closes consumer
+	consumer.close()

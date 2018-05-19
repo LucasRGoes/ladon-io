@@ -5,17 +5,19 @@
  */
 
 /* LIBRARIES */
+#include "DHTesp.h"
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
 /* DEFINES */
-#define WIFI_SSID		"Goes"
-#define WIFI_PSK		"23523373"
+#define WIFI_SSID		"Ladon_TCC"
+#define WIFI_PSK		"Mko09ijN"
 #define HOSTNAME		"deviceos"
 
 #define MQTT_BROKER		"lgateway.local"
 #define MQTT_CLIENT_ID	"device-os"
 
+#define DHTPIN 			4     // what digital pin the DHT22 is conected to
 #define POOLING_TIME	60000 // milliseconds
 
 #define DEVICE_HASH		"vzyJYkThrw9u9gP5"
@@ -47,19 +49,27 @@ void loop() {
 	unsigned long now = millis();
 	if(now - lastSensorReading >= POOLING_TIME || lastSensorReading == 0UL) {
 
-		// Gets reading
-		float reading = readSensor();
-
 		// Creates topic
 		String topic = "/ladon/";
 		topic += String(DEVICE_HASH);
 
-		// Creates JSON string and publishes it
-		String toPublish = "{\"type\":\"number\",\"description\":\"temperature\",\"value\":"
-							+ String(reading) + "}";
+		// Gets temperature reading and validate
+		float temperature = readTemperature();
+		if(!isnan(temperature)) {
+			Serial.println("Temperature: " + String(temperature));
+			sendPackage(topic, "temperature", temperature);
+		} else {
+			Serial.println("Failed to read temperature!");
+		}
 
-		Serial.println("Temperature: " + String(reading));
-		mqttClient.publish(topic.c_str(), toPublish.c_str());
+		// Gets humidity reading and validate
+		float humidity = readHumidity();
+		if(!isnan(humidity)) {
+			Serial.println("Humidity: " + String(humidity));
+			sendPackage(topic, "humidity", humidity);
+		} else {
+			Serial.println("Failed to read humidity!");
+		}
 
 		lastSensorReading = now;
 

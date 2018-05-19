@@ -5,12 +5,20 @@
  */
 
 /* VARIABLES */
+DHTesp dht;
 unsigned long lastSensorReading = 0UL;
 
 /* FUNCTIONS */
 void startSensor(void) {
-	// Gets a reading from the adc pin to use as a random seed
-	randomSeed(analogRead(0));
+	dht.setup(DHTPIN);
+}
+
+float readHumidity(void) {
+	return dht.getHumidity();
+}
+
+float readTemperature(void) {
+	return dht.getTemperature();
 }
 
 float readSensor(void) {

@@ -4,23 +4,27 @@ import logging									# Logging: provides a set of convenience functions for si
 import math										# Math: it provides access to the mathematical functions defined by the C standard
 import time										# Time: provides various time-related functions
 
+from utils import argumentParserFactory			# argumentParserFactory: argument parser for the module
 from kafka import KafkaConsumer					# KafkaConsumer: is a high-level, asynchronous message consumer
 from BucketSupervisor import BucketSupervisor	# BucketSupervisor: saves buckets by supervising their sizes
 from MongoWrapper import MongoWrapper			# MongoWrapper: mongo client wrapper
 
 ## MAIN ##
 
+# Handles arguments
+args = argumentParserFactory().parse_args()
+
 # Configures logging module
-logging.basicConfig(format='%(asctime)s [%(levelname)s] [%(name)s]: %(message)s', level=20)
+logging.basicConfig(format='%(asctime)s [%(levelname)s] [%(name)s]: %(message)s', level=args.verbosity * 10)
 logger = logging.getLogger("KafkaFileWrapper")
 logger.info("started")
+
+# Creates a MongoWrapper
+mongo = MongoWrapper(args.mongo_client, args.mongo_password)
 
 # Creates a BucketSupervisor and start it
 supervisor = BucketSupervisor()
 supervisor.start()
-
-# Creates a MongoWrapper
-mongo = MongoWrapper()
 
 # Receives message from Kafka broker
 while(True):

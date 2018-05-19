@@ -11,21 +11,21 @@ class MongoWrapper:
 		# __init__ (Private Constructor)
 		# --------
 		# Initializes an instance of MongoWrapper
-		def __init__(self):
+		def __init__(self, user, password):
 
 			# Creates logger
 			self.logger = logging.getLogger("MongoWrapper")
 
 			# Creates Mongo client
-			self.client = MongoClient("mongodb://{0}:{1}@127.0.0.1/ladon".format("ladon", "ladon05121995"))
+			self.client = MongoClient("mongodb://{0}:{1}@127.0.0.1/ladon".format(user, password))
 
 	# __init__ (Public Constructor)
 	# --------
 	# Initializes an instance of MongoWrapper
 	instance = None
-	def __init__(self):
+	def __init__(self, user, password):
 		if not MongoWrapper.instance:
-			MongoWrapper.instance = MongoWrapper.__MongoWrapper()
+			MongoWrapper.instance = MongoWrapper.__MongoWrapper(user, password)
 
 		self.__logger = MongoWrapper.instance.logger
 		self.__client = MongoWrapper.instance.client
@@ -34,7 +34,7 @@ class MongoWrapper:
 	# --------
 	# Stores package at mongo database
 	#
-	# - package {dict}: 
+	# - package {dict}: Package to be stored
 	def storePackage(self, package):
 
 		# Gets the packages collection

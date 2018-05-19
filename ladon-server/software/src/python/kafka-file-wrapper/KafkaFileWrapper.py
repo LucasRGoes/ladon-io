@@ -1,9 +1,12 @@
 ## IMPORTS ##
 import json										# Json: is a lightweight data interchange format inspired by JavaScript object literal syntax
 import logging									# Logging: provides a set of convenience functions for simple logging usage
+import math										# Math: it provides access to the mathematical functions defined by the C standard
+import time										# Time: provides various time-related functions
 
 from kafka import KafkaConsumer					# KafkaConsumer: is a high-level, asynchronous message consumer
 from BucketSupervisor import BucketSupervisor	# BucketSupervisor: saves buckets by supervising their sizes
+from MongoWrapper import MongoWrapper			# MongoWrapper: mongo client wrapper
 
 ## MAIN ##
 
@@ -23,8 +26,14 @@ consumer = KafkaConsumer(
 				value_deserializer = lambda v: json.loads(v.decode("utf-8"))
 			)
 
+# Creates a MongoWrapper
+mongo = MongoWrapper()
+
 # Receives message from Kafka broker
 for msg in consumer:
+
+	# Stores the timestamp from the arrival moment
+	timestamp = math.floor(time.time())
 
 	try:
 
@@ -40,7 +49,11 @@ for msg in consumer:
 			supervisor.addPackageToBucket(package)
 
 		else:
-			logger.info("message arrived: {}".format(package))
+
+			# Stores arrival moment at package
+			package["arrival"] = timestamp
+			logger.info("package arrived: {}".format(package))
+			mongo.storePackage(package)
 
 	except Exception as err:
 		logger.error("failure at KafkaConsumer: {}".format(err))

@@ -210,6 +210,28 @@ cd ../../..
 rm -r opencv-build
 
 #########################################
+# Installing RTC
+#########################################
+
+# Dependencies #
+echo -e "$prefix Installing RTC dependencies ..."
+apt-get install python-smbus i2c-tools
+
+# Add dtoverlay=i2c-rtc,ds1307 to /boot/config.txt
+
+echo -e "$prefix Removing fake-hwclock ..."
+apt-get -y remove fake-hwclock
+update-rc.d -f fake-hwclock remove
+
+# Comments these three lines from /lib/udev/hwclock-set:
+#if [ -e /run/systemd/system ] ; then
+# exit 0
+#fi
+
+echo -e "$prefix Updating RTC ..."
+hwclock -w
+
+#########################################
 # Installing Other Python Modules
 #########################################
 echo -e "$prefix Installing python modules ..."

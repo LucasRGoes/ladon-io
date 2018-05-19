@@ -23,7 +23,7 @@ logger.info("started")
 mongo = MongoWrapper(args.mongo_user, args.mongo_password)
 
 # Creates a BucketSupervisor and start it
-supervisor = BucketSupervisor()
+supervisor = BucketSupervisor(args.mongo_user, args.mongo_password)
 supervisor.start()
 
 # Receives message from Kafka broker

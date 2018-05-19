@@ -12,7 +12,7 @@ class BucketSupervisor(Thread):
 	# __init__
 	# --------
 	# Initializes an instance of BucketSupervisor
-	def __init__(self):
+	def __init__(self, user, password):
 
 		# Thread constructor
 		Thread.__init__(self)
@@ -27,7 +27,7 @@ class BucketSupervisor(Thread):
 		self.__buckets = {}
 
 		# Creates mongo client
-		self.__mongo = MongoWrapper()
+		self.__mongo = MongoWrapper(user, password)
 
 	# run
 	# --------

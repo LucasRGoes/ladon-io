@@ -20,7 +20,7 @@ logger = logging.getLogger("KafkaFileWrapper")
 logger.info("started")
 
 # Creates a MongoWrapper
-mongo = MongoWrapper(args.mongo_client, args.mongo_password)
+mongo = MongoWrapper(args.mongo_user, args.mongo_password)
 
 # Creates a BucketSupervisor and start it
 supervisor = BucketSupervisor()

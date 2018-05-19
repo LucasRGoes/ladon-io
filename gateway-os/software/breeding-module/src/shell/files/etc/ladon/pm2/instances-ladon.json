@@ -5,7 +5,9 @@
       "cwd": "/var/log/ladon",
       "script": "/usr/bin/python3.5",
       "args": [
-        "/usr/share/ladon/tongue-module/src/main.py"
+        "/usr/share/ladon/tongue-module/src/main.py",
+        "-k",
+        "<kafka-server>"
       ],
       "watch": [
         "/usr/share/ladon/tongue-module/src/main.py"

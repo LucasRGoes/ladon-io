@@ -16,7 +16,7 @@ def argumentParserFactory():
 	parser.add_argument("-v", "--verbosity", type=int, default=2, choices=[0, 1, 2, 3, 4, 5], help="increase output verbosity")
 
 	# MODULE
-	parser.add_argument("-k", "--kafka", type=str, default="ladonio.ddns.net", help="the kafka broker")
+	parser.add_argument("-k", "--kafka", type=str, default="localhost", help="the kafka broker")
 	parser.add_argument("-b", "--broker", type=str, default="localhost", help="the mqtt broker")
 	parser.add_argument("--kafka-topic", type=str, default="ladon", help="the kafka topic to publish")
 	parser.add_argument("--mqtt-topic", type=str, default="#", help="the mqtt topic to subscribe")

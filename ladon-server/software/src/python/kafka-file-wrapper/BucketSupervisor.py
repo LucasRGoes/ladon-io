@@ -91,6 +91,7 @@ class BucketSupervisor(Thread):
 			# Stores package at mongo
 			toStore = package.copy()
 			toStore["value"] = "{0}/captures/{1}.png".format(os.getcwd(), package["arrival"])
+			toStore.pop("chunk_id", None)
 			self.__mongo.storePackage(toStore)
 
 			# Initializes a ChunkBucket

@@ -1,5 +1,6 @@
 ## IMPORTS ##
 import logging							# Logging: provides a set of convenience functions for simple logging usage
+import os 								# OS: this module provides a portable way of using operating system dependent functionality 
 import time 							# Time: provides various time-related functions
 
 from threading import Lock, Thread		# Threading: this module constructs higher-level threading interfaces on top of the lower level thread module

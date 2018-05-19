@@ -17,7 +17,7 @@ class MongoWrapper:
 			self.logger = logging.getLogger("MongoWrapper")
 
 			# Creates Mongo client
-			self.client = MongoClient("mongodb://{0}:{1}@ladonio.ddns.net/ladon".format("ladon", "ladon05121995"))
+			self.client = MongoClient("mongodb://{0}:{1}@127.0.0.1/ladon".format("ladon", "ladon05121995"))
 
 	# __init__ (Public Constructor)
 	# --------

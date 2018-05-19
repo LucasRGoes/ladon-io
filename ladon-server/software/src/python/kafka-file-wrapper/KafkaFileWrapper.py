@@ -28,8 +28,7 @@ while(True):
 	# Creates a Kafka consumer
 	consumer = KafkaConsumer(
 					'ladon',
-					#bootstrap_servers = "localhost",
-					bootstrap_servers = "ladonio.ddns.net",
+					bootstrap_servers = "localhost",
 					value_deserializer = lambda v: json.loads(v.decode("utf-8"))
 				)
 

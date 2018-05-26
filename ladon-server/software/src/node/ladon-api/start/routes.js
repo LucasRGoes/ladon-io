@@ -15,6 +15,27 @@
 
 const Route = use('Route')
 
-Route.get('/', ({ request }) => {
+//Route.post('/token', 'TokenController.store')
+
+Route
+	.group(() => {
+
+		Route.get('id/:id/description/:description', 'QueryController.range')
+		Route.get('id/:id/description/:description/last', 'QueryController.last')
+		Route.get('list', 'QueryController.list')
+
+	})
+	.prefix('api/v1')
+
+Route.get('/', async ({ request, auth }) => {
+
+	// const user = new User()
+
+	// user.username = 'ladon'
+	// user.email = 'lucas.rd.goes@gmail.com'
+	// user.password = '05121995'
+
+	// console.log(await user.save())
+
   return { greeting: 'Hello world in JSON' }
-})
+}).middleware(['auth'])

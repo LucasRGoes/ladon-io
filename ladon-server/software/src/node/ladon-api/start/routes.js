@@ -26,16 +26,4 @@ Route
 
 	})
 	.prefix('api/v1')
-
-Route.get('/', async ({ request, auth }) => {
-
-	// const user = new User()
-
-	// user.username = 'ladon'
-	// user.email = 'lucas.rd.goes@gmail.com'
-	// user.password = '05121995'
-
-	// console.log(await user.save())
-
-  return { greeting: 'Hello world in JSON' }
-}).middleware(['auth'])
+	.middleware(['auth'])

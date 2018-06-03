@@ -15,16 +15,28 @@
         {{ css('vendors/font-awesome/css/font-awesome.min.css') }}
         <!-- NProgress -->
         {{ css('vendors/nprogress/nprogress.css') }}
-        <!-- Animate.css -->
-        {{ css('vendors/animate.css/animate.min.css') }}
+        <!-- bootstrap-progressbar -->
+        {{ css('vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}
 
         <!-- Custom Theme Style -->
         {{ css('build/css/custom.min.css') }}
     </head>
-    <body class="login">
+    <body class="nav-md footer_fixed">
+        <div class="container body">
+            <div class="main_container">
+                <!-- Sidebar -->
+                @!include('partials.sidebar')
 
-        <!-- Content -->
-        @!section('content')
+                <!-- Top Navigation -->
+                @!include('partials.top_navigation')
+
+                <!-- Content -->
+                @!section('content')
+
+                <!-- Footer -->
+                @!include('partials.footer')
+            </div>
+        </div>
 
         <!-- jQuery -->
         {{ script('vendors/jquery/dist/jquery.min.js') }}
@@ -34,8 +46,21 @@
         {{ script('vendors/fastclick/lib/fastclick.js') }}
         <!-- NProgress -->
         {{ script('vendors/nprogress/nprogress.js') }}
-        
+        <!-- Chart.js -->
+        {{ script('vendors/Chart.js/dist/Chart.min.js') }}
+        <!-- jQuery Sparklines -->
+        {{ script('vendors/jquery-sparkline/dist/jquery.sparkline.min.js') }}
+        <!-- easy-pie-chart -->
+        {{ script('vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js') }}
+        <!-- bootstrap-progressbar -->
+        {{ script('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}
+
         <!-- Custom Theme Scripts -->
         {{ script('build/js/custom.min.js') }}
+
+        <!-- Custom Websocket Script -->
+        {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+        {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+        {{ script('custom/js/websocket.js') }}
     </body>
 </html>

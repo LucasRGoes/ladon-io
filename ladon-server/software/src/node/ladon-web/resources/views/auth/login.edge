@@ -6,12 +6,16 @@
       <div class="animate form login_form">
         <section class="login_content">
           <form id="my_form" action="/login" method="post">
+            
             <h1>Login</h1>
+
+            {{ csrfField() }}
+
             <div>
-              <input type="text" class="form-control" placeholder="Username" required="" />
+              <input type="text" class="form-control" placeholder="E-mail" name="email" required="" />
             </div>
             <div>
-              <input type="password" class="form-control" placeholder="Password" required="" />
+              <input type="password" class="form-control" placeholder="Password" name="password" required="" />
             </div>
             <div>
               <a class="btn btn-default submit" onclick="aTagAsSubmitButton();">Log in</a>

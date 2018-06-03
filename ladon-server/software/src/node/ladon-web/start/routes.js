@@ -15,4 +15,10 @@
 
 const Route = use('Route')
 
-Route.on('/').render('auth.login')
+/* PAGES */
+Route.get('/', 'UserController.index')
+
+/* OTHER ROUTES */
+Route.post('/login', 'UserController.login')
+Route.get('/logout', 'UserController.logout')
+//Route.post('/user', 'UserController.create')

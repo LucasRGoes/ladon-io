@@ -32,33 +32,41 @@ class LadonController {
   		url: this.apiUrl,
   		headers: this.apiHeaders
   	}
-  	const answer = {
-		response: message.request,
-		status: true
-	}
-  	const requestCallback = (error, response, body) => {
-		if (!error && response.statusCode == 200) {
-			answer.data = JSON.parse(body)
-		} else {
-			answer.status = false
-		}
-
-		socket.emit('message', answer)
-	}
-
-  	// Verifying type of request
+  	
+  	// Verifying type of request for path completion
   	switch(message.request) {
 
   		case 'list':
   			requestOptions.url += '/list'
-  			request(requestOptions, requestCallback)
   			break
   		case 'last':
+        requestOptions.url += `/id/${ message.id }/description/${ message.description }/last`
   			break
   		case 'time':
+        const toT = Math.floor(Date.now() / 1000)
+        const fromT = toT - 3600
+        requestOptions.url += `/id/${ message.id }/description/${ message.description }?from=${ fromT }&to=${ toT }`
   			break
 
   	}
+
+    // Making the request
+    request(requestOptions, (error, response, body) => {
+
+      const answer = {
+        response: message.request,
+        status: true
+      }
+
+      if (!error && response.statusCode == 200) {
+        answer.data = JSON.parse(body)
+      } else {
+        answer.status = false
+      }
+
+      socket.emit('message', answer)
+
+    })
 
   }
 

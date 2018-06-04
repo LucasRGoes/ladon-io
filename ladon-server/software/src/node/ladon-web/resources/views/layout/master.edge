@@ -21,7 +21,7 @@
         <!-- Custom Theme Style -->
         {{ css('build/css/custom.min.css') }}
     </head>
-    <body class="nav-md footer_fixed">
+    <body class="nav-md">
         <div class="container body">
             <div class="main_container">
                 <!-- Sidebar -->
@@ -48,15 +48,14 @@
         {{ script('vendors/nprogress/nprogress.js') }}
         <!-- Chart.js -->
         {{ script('vendors/Chart.js/dist/Chart.min.js') }}
-        <!-- jQuery Sparklines -->
-        {{ script('vendors/jquery-sparkline/dist/jquery.sparkline.min.js') }}
-        <!-- easy-pie-chart -->
-        {{ script('vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js') }}
-        <!-- bootstrap-progressbar -->
-        {{ script('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}
+        <!-- Moment.js -->
+        {{ script('vendors/moment/min/moment.min.js') }}
 
         <!-- Custom Theme Scripts -->
         {{ script('build/js/custom.min.js') }}
+
+        <!-- Custom Charts Script -->
+        {{ script('custom/js/charts.js') }}
 
         <!-- Custom Websocket Script -->
         {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}

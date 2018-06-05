@@ -46,7 +46,9 @@ function subscribeToChannel () {
 					const dashboardTimestamp = document.getElementById(`${ data.description }_timestamp`)
 
 					if(dashboardValue && dashboardTimestamp) {
-						dashboardValue.innerHTML = data.value
+						const oldValue = parseFloat(dashboardValue.innerHTML)
+						const unity = dashboardValue.innerHTML.replace(oldValue.toString(), "")
+						dashboardValue.innerHTML = `${ data.value }${ unity }`
 						dashboardTimestamp.innerHTML = moment(data.timestamp * 1000).fromNow()
 					}
 				}
@@ -57,7 +59,7 @@ function subscribeToChannel () {
 					let labels = []
 					let dataArray = []
 					for(let data of message.data) {
-						labels.unshift(data.timestamp)
+						labels.unshift( moment(data.timestamp * 1000).format('HH:mm') )
 						dataArray.unshift(data.value)
 					}
 

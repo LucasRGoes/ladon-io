@@ -5,15 +5,25 @@ const Logger = use('Logger')
 
 class UserController {
 
-	async index({ request, view, auth }) {
+	async index({ response, view, auth }) {
 
 		try {
-			request.user = await auth.getUser()
-			return view.render('dashboard.data')
+			await auth.getUser()
+			response.redirect('/environment')
 		} catch (error) {
 			return view.render('auth.login')
 		}
 
+	}
+
+	async environment({ request, view, auth }) {
+		request.user = await auth.getUser()
+		return view.render('dashboard.environment')
+	}
+
+	async samples({ request, view, auth }) {
+		request.user = await auth.getUser()
+		return view.render('dashboard.samples')
 	}
 
 	async login({ request, response, auth }) {

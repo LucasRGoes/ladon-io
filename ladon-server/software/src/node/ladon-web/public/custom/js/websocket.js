@@ -46,9 +46,15 @@ function subscribeToChannel () {
 					const dashboardTimestamp = document.getElementById(`${ data.description }_timestamp`)
 
 					if(dashboardValue && dashboardTimestamp) {
-						const oldValue = parseFloat(dashboardValue.innerHTML)
-						const unity = dashboardValue.innerHTML.replace(oldValue.toString(), "")
-						dashboardValue.innerHTML = `${ data.value }${ unity }`
+
+						if(data.description === 'photo') {
+							dashboardValue.url = data.value.replace('/var/log/', '')
+						} else {
+							const oldValue = parseFloat(dashboardValue.innerHTML)
+							const unity = dashboardValue.innerHTML.replace(oldValue.toString(), "")
+							dashboardValue.innerHTML = `${ data.value }${ unity }`
+						}
+
 						dashboardTimestamp.innerHTML = moment(data.timestamp * 1000).fromNow()
 					}
 				}

@@ -17,6 +17,8 @@ const Route = use('Route')
 
 /* PAGES */
 Route.get('/', 'UserController.index')
+Route.get('/environment', 'UserController.environment').middleware('auth')
+Route.get('/samples', 'UserController.samples').middleware('auth')
 
 /* OTHER ROUTES */
 Route.post('/login', 'UserController.login')

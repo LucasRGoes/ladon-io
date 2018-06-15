@@ -1,46 +1,63 @@
 ## IMPORTS ##
 import json										# Json: is a lightweight data interchange format inspired by JavaScript object literal syntax
 import logging									# Logging: provides a set of convenience functions for simple logging usage
+import math										# Math: it provides access to the mathematical functions defined by the C standard
+import time										# Time: provides various time-related functions
 
+from utils import argumentParserFactory			# argumentParserFactory: argument parser for the module
 from kafka import KafkaConsumer					# KafkaConsumer: is a high-level, asynchronous message consumer
 from BucketSupervisor import BucketSupervisor	# BucketSupervisor: saves buckets by supervising their sizes
+from MongoWrapper import MongoWrapper			# MongoWrapper: mongo client wrapper
 
 ## MAIN ##
 
+# Handles arguments
+args = argumentParserFactory().parse_args()
+
 # Configures logging module
-logging.basicConfig(format='%(asctime)s [%(levelname)s] [%(name)s]: %(message)s', level=20)
+logging.basicConfig(format='%(asctime)s [%(levelname)s] [%(name)s]: %(message)s', level=args.verbosity * 10)
 logger = logging.getLogger("KafkaFileWrapper")
 logger.info("started")
 
+# Creates a MongoWrapper
+mongo = MongoWrapper(args.mongo_user, args.mongo_password)
+
 # Creates a BucketSupervisor and start it
-supervisor = BucketSupervisor()
+supervisor = BucketSupervisor(args.mongo_user, args.mongo_password)
 supervisor.start()
 
-# Creates a Kafka consumer
-consumer = KafkaConsumer(
-				'ladon',
-				bootstrap_servers = "localhost",
-				value_deserializer = lambda v: json.loads(v.decode("utf-8"))
-			)
-
 # Receives message from Kafka broker
-for msg in consumer:
+while(True):
+
+	# Creates a Kafka consumer
+	consumer = KafkaConsumer(
+					'ladon',
+					bootstrap_servers = "localhost",
+					value_deserializer = lambda v: json.loads(v.decode("utf-8"))
+				)
 
 	try:
 
-		# Get package
-		package = msg.value
+		for msg in consumer:
 
-		# Verify package type
-		if package["type"] == "file":
-			# Deserializes value
-			package["value"] = bytearray(package["value"]["__value__"])
+			# Get package and stores arrival moment
+			package = msg.value
+			package["arrival"] = math.floor(time.time())
 
-			# Adds package to bucket
-			supervisor.addPackageToBucket(package)
+			# Verify package type
+			if package["type"] == "file":
+				# Deserializes value
+				package["value"] = bytearray(package["value"]["__value__"])
 
-		else:
-			logger.info("message arrived: {}".format(package))
+				# Adds package to bucket
+				supervisor.addPackageToBucket(package)
+
+			else:
+				logger.info("package arrived: {}".format(package))
+				mongo.storePackage(package)
 
 	except Exception as err:
 		logger.error("failure at KafkaConsumer: {}".format(err))
+
+	# Closes consumer
+	consumer.close()

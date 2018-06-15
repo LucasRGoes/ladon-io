@@ -1,9 +1,11 @@
 ## IMPORTS ##
 import logging							# Logging: provides a set of convenience functions for simple logging usage
+import os 								# OS: this module provides a portable way of using operating system dependent functionality 
 import time 							# Time: provides various time-related functions
 
 from threading import Lock, Thread		# Threading: this module constructs higher-level threading interfaces on top of the lower level thread module
 from ChunkBucket import ChunkBucket		# ChunkBucket: bucket that stores chunks
+from MongoWrapper import MongoWrapper	# MongoWrapper: mongo client wrapper
 
 ## CLASS ##
 class BucketSupervisor(Thread):
@@ -11,7 +13,7 @@ class BucketSupervisor(Thread):
 	# __init__
 	# --------
 	# Initializes an instance of BucketSupervisor
-	def __init__(self):
+	def __init__(self, user, password):
 
 		# Thread constructor
 		Thread.__init__(self)
@@ -24,6 +26,9 @@ class BucketSupervisor(Thread):
 
 		# Creates buckets map
 		self.__buckets = {}
+
+		# Creates mongo client
+		self.__mongo = MongoWrapper(user, password)
 
 	# run
 	# --------
@@ -82,6 +87,12 @@ class BucketSupervisor(Thread):
 		# Verify if a bucket with this key already exists
 		if not key in self.__buckets:
 			self.__logger.info("creating bucket: {}".format(key))
+
+			# Stores package at mongo
+			toStore = package.copy()
+			toStore["value"] = "{0}/captures/{1}.png".format(os.getcwd(), package["arrival"])
+			toStore.pop("chunk_id", None)
+			self.__mongo.storePackage(toStore)
 
 			# Initializes a ChunkBucket
 			self.__buckets[key] = {

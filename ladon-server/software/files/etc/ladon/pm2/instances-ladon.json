@@ -5,7 +5,9 @@
       "cwd": "/var/log/ladon",
       "script": "/usr/bin/python3.5",
       "args": [
-        "/usr/share/ladon/kafka-file-wrapper/KafkaFileWrapper.py"
+        "/usr/share/ladon/kafka-file-wrapper/KafkaFileWrapper.py",
+        "--mongo-password",
+        "<password>"
       ],
       "watch": [
         "/usr/share/ladon/kafka-file-wrapper/KafkaFileWrapper.py"

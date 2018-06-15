@@ -15,7 +15,7 @@ module.exports = {
   | Available Serializers - lucid, database
   |
   */
-  authenticator: 'jwt',
+  authenticator: 'api',
 
   /*
   |--------------------------------------------------------------------------
@@ -73,5 +73,23 @@ module.exports = {
     options: {
       secret: Env.get('APP_KEY')
     }
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | Api
+  |--------------------------------------------------------------------------
+  |
+  | Api authenticator authenticates are requests based on Authorization
+  | header.
+  |
+  | Make sure to define relationships on User and Token model as defined
+  | in documentation
+  |
+  */
+  api: {
+    serializer: 'lucid',
+    model: 'App/Models/User',
+    scheme: 'api'
   }
 }

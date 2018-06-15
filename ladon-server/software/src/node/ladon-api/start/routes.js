@@ -15,6 +15,15 @@
 
 const Route = use('Route')
 
-Route.get('/', ({ request }) => {
-  return { greeting: 'Hello world in JSON' }
-})
+//Route.post('/token', 'TokenController.store')
+
+Route
+	.group(() => {
+
+		Route.get('id/:id/description/:description', 'QueryController.range')
+		Route.get('id/:id/description/:description/last', 'QueryController.last')
+		Route.get('list', 'QueryController.list')
+
+	})
+	.prefix('api/v1')
+	.middleware(['auth'])

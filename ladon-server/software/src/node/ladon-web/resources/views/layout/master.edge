@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>LadonIO</title>
+
+        <!-- Bootstrap -->
+        {{ css('vendors/bootstrap/dist/css/bootstrap.min.css') }}
+        <!-- Font Awesome -->
+        {{ css('vendors/font-awesome/css/font-awesome.min.css') }}
+        <!-- NProgress -->
+        {{ css('vendors/nprogress/nprogress.css') }}
+        <!-- bootstrap-progressbar -->
+        {{ css('vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}
+
+        <!-- Custom Theme Style -->
+        {{ css('build/css/custom.min.css') }}
+    </head>
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <!-- Sidebar -->
+                @!include('partials.sidebar')
+
+                <!-- Top Navigation -->
+                @!include('partials.top_navigation')
+
+                <!-- Content -->
+                @!section('content')
+
+                <!-- Footer -->
+                @!include('partials.footer')
+            </div>
+        </div>
+
+        <!-- jQuery -->
+        {{ script('vendors/jquery/dist/jquery.min.js') }}
+        <!-- Bootstrap -->
+        {{ script('vendors/bootstrap/dist/js/bootstrap.min.js') }}
+        <!-- FastClick -->
+        {{ script('vendors/fastclick/lib/fastclick.js') }}
+        <!-- NProgress -->
+        {{ script('vendors/nprogress/nprogress.js') }}
+        <!-- Chart.js -->
+        {{ script('vendors/Chart.js/dist/Chart.min.js') }}
+        <!-- Moment.js -->
+        {{ script('vendors/moment/min/moment.min.js') }}
+
+        <!-- Custom Theme Scripts -->
+        {{ script('build/js/custom.min.js') }}
+
+        <!-- Custom Charts Script -->
+        {{ script('custom/js/charts.js') }}
+
+        <!-- Custom Websocket Script -->
+        {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+        {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+        {{ script('custom/js/websocket.js') }}
+    </body>
+</html>

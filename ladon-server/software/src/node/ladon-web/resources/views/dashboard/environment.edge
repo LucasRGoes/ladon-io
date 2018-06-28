@@ -1,0 +1,40 @@
+@layout('layout.master')
+
+@section('content')
+	<div class="right_col" role="main">
+		<div>
+			<div class="page-title">
+				<div class="title_left">
+					<h3>Environment</h3>
+				</div>
+			</div>
+
+			<div class="clearfix"></div>
+
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<div>
+                  		<div class="x_content">
+                    		<div class="row">
+                    			@!component('components.widget', icon = 'fire', valueId = 'temperature', unity = '°C', description = 'Temperature', timestampId = 'temperature_timestamp')
+                    			@!component('components.widget', icon = 'tint', valueId = 'humidity', unity = '%', description = 'Humidity', timestampId = 'humidity_timestamp')
+                   			</div>
+                  		</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<div class="x_panel">
+						@!component('components.line_graph', description = 'Temperature', graphId = 'temperature_graph')
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<div class="x_panel">
+						@!component('components.line_graph', description = 'Humidity', graphId = 'humidity_graph')
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+@endsection

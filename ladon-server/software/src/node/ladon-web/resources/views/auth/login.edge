@@ -1,0 +1,40 @@
+@layout('layout.auth')
+
+@section('content')
+  <div>
+    <div class="login_wrapper">
+      <div class="animate form login_form">
+        <section class="login_content">
+          <form id="my_form" action="/login" method="post">
+            
+            <h1>Login</h1>
+
+            {{ csrfField() }}
+
+            <div>
+              <input type="text" class="form-control" placeholder="E-mail" name="email" required="" />
+            </div>
+            <div>
+              <input type="password" class="form-control" placeholder="Password" name="password" required="" />
+            </div>
+            <div>
+              <a class="btn btn-default submit" onclick="aTagAsSubmitButton();">Log in</a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
+              <div class="clearfix"></div>
+              <br />
+
+              <div>
+                <h1>LadonIO</h1>
+                <p>LadonIO is an ideal environment advisor through the classification of fruits and vegetables</p>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+@endsection

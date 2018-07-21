@@ -20,7 +20,7 @@
 #define DHTPIN 			4     // what digital pin the DHT22 is conected to
 #define POOLING_TIME	60000 // milliseconds
 
-#define DEVICE_HASH		"vzyJYkThrw9u9gP5"
+#define DEVICE_ID		"vzyJYkThrw9u9gP5"
 
 /* MODULES */
 #include "LadonConnection.h"
@@ -51,7 +51,7 @@ void loop() {
 
 		// Creates topic
 		String topic = "/ladon/";
-		topic += String(DEVICE_HASH);
+		topic += String(DEVICE_ID);
 
 		// Gets temperature reading and validate
 		float temperature = readTemperature();

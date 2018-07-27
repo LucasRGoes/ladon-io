@@ -90,11 +90,11 @@ echo -e "$prefix Installing basic packages ..."
 apt-get install -y htop vim git curl
 
 # Installing necessary packages
-apt-get install -y mosquitto mosquitto-clients
+# apt-get install -y mosquitto mosquitto-clients
 
-echo -e "$prefix Updating time and locale ..."
-locale-gen en_US.UTF-8 pt_BR.UTF-8
-dpkg-reconfigure locales
+echo -e "$prefix Updating timezone ..."
+# locale-gen en_US.UTF-8 pt_BR.UTF-8
+# dpkg-reconfigure locales
 dpkg-reconfigure tzdata
 
 #########################################
@@ -213,30 +213,50 @@ rm -r opencv-build
 # Installing RTC
 #########################################
 
-# Dependencies #
-echo -e "$prefix Installing RTC dependencies ..."
-apt-get install python-smbus i2c-tools
+# # Dependencies #
+# echo -e "$prefix Installing RTC dependencies ..."
+# apt-get install python-smbus i2c-tools
 
-# Add dtoverlay=i2c-rtc,ds1307 to /boot/config.txt
+# # Add dtoverlay=i2c-rtc,ds1307 to /boot/config.txt
 
-echo -e "$prefix Removing fake-hwclock ..."
-apt-get -y remove fake-hwclock
-update-rc.d -f fake-hwclock remove
+# echo -e "$prefix Removing fake-hwclock ..."
+# apt-get -y remove fake-hwclock
+# update-rc.d -f fake-hwclock remove
 
-# Comments these three lines from /lib/udev/hwclock-set:
-#if [ -e /run/systemd/system ] ; then
-# exit 0
-#fi
+# # Comments these three lines from /lib/udev/hwclock-set:
+# #if [ -e /run/systemd/system ] ; then
+# # exit 0
+# #fi
 
-echo -e "$prefix Updating RTC ..."
-hwclock -w
+# echo -e "$prefix Updating RTC ..."
+# hwclock -w
 
 #########################################
 # Installing Other Python Modules
 #########################################
-echo -e "$prefix Installing python modules ..."
-pip3 install kafka-python
-pip3 install paho-mqtt
+# echo -e "$prefix Installing python modules ..."
+# pip3 install kafka-python
+# pip3 install paho-mqtt
+
+#########################################
+# Installing Eclipse Kura
+#########################################
+
+echo -e "$prefix Uninstalling packages that conflict with Eclipse Kura ..."
+apt-get purge dhcpcd5
+apt-get remove network-manager
+
+systemctl disable networking
+rfkill unblock all
+
+# Dependencies #
+echo -e "$prefix Installing Eclipse Kura dependencies ..."
+apt-get update
+apt-get install gdebi-core openjdk-8-jre-headless
+
+echo -e "$prefix Installing Eclipse Kura ..."
+wget http://download.eclipse.org/kura/releases/3.2.0/kura_3.2.0_raspberry-pi-2-3_installer.deb
+gdebi kura_3.2.0_raspberry-pi-2-3_installer.deb
 
 #########################################
 # Starting Modules
@@ -244,7 +264,7 @@ pip3 install paho-mqtt
 
 echo -e "$prefix Copying modules ..."
 cp -r ../../../brain-module $folderFiles
-cp -r ../../../tongue-module $folderFiles
+# cp -r ../../../tongue-module $folderFiles
 cp files/etc/ladon/pm2/instances-ladon.json $folderEtc/pm2
 
 echo -e "$prefix Starting modules ..."

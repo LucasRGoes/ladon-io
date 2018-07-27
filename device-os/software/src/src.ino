@@ -50,7 +50,7 @@ void loop() {
 	if(now - lastSensorReading >= POOLING_TIME || lastSensorReading == 0UL) {
 
 		// Creates topic
-		String topic = "lgateway/";
+		String topic = "ladon/";
 		topic += String(DEVICE_ID);
 		topic += "/feature/";
 
@@ -59,7 +59,7 @@ void loop() {
 		if(!isnan(temperature)) {
 			Serial.println("Temperature: " + String(temperature));
 			topic += "temperature";
-			sendPackage(topic, temperature);
+			sendPackage(topic, "temperature", temperature);
 		} else {
 			Serial.println("Failed to read temperature!");
 		}
@@ -69,7 +69,7 @@ void loop() {
 		if(!isnan(humidity)) {
 			Serial.println("Humidity: " + String(humidity));
 			topic += "humidity";
-			sendPackage(topic, humidity);
+			sendPackage(topic, "humidity", humidity);
 		} else {
 			Serial.println("Failed to read humidity!");
 		}

@@ -90,6 +90,7 @@ echo -e "$prefix Installing basic packages ..."
 apt-get install -y htop vim git curl
 
 # Installing necessary packages
+apt-get install -y openvpn
 # apt-get install -y mosquitto mosquitto-clients
 
 echo -e "$prefix Updating timezone ..."

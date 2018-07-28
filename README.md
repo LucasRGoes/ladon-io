@@ -7,6 +7,6 @@ ladon-io
 
 ### Motivation ###
 
-This project was created for my university course conclusion work at computer engineering
+This project was created for my university course conclusion work at computer engineering.
 
 ### Example ###

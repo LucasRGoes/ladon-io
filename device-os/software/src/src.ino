@@ -12,15 +12,15 @@
 /* DEFINES */
 #define WIFI_SSID		"Ladon_TCC"
 #define WIFI_PSK		"Mko09ijN"
-#define HOSTNAME		"deviceos"
+#define HOSTNAME		"ldevice"
 
 #define MQTT_BROKER		"lgateway.local"
-#define MQTT_CLIENT_ID	"device-os"
+#define MQTT_CLIENT_ID	"ldevice"
 
-#define DHTPIN 			4     // what digital pin the DHT22 is conected to
+#define DHTPIN 			D4    // what digital pin the DHT22 is conected to
 #define POOLING_TIME	60000 // milliseconds
 
-#define DEVICE_HASH		"vzyJYkThrw9u9gP5"
+#define DEVICE_ID		"vzyJYkThrw9u9gP5"
 
 /* MODULES */
 #include "LadonConnection.h"
@@ -50,13 +50,15 @@ void loop() {
 	if(now - lastSensorReading >= POOLING_TIME || lastSensorReading == 0UL) {
 
 		// Creates topic
-		String topic = "/ladon/";
-		topic += String(DEVICE_HASH);
+		String topic = "ladon/";
+		topic += String(DEVICE_ID);
+		topic += "/feature/";
 
 		// Gets temperature reading and validate
 		float temperature = readTemperature();
 		if(!isnan(temperature)) {
 			Serial.println("Temperature: " + String(temperature));
+			topic += "temperature";
 			sendPackage(topic, "temperature", temperature);
 		} else {
 			Serial.println("Failed to read temperature!");
@@ -66,6 +68,7 @@ void loop() {
 		float humidity = readHumidity();
 		if(!isnan(humidity)) {
 			Serial.println("Humidity: " + String(humidity));
+			topic += "humidity";
 			sendPackage(topic, "humidity", humidity);
 		} else {
 			Serial.println("Failed to read humidity!");

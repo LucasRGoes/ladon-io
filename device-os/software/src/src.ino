@@ -10,10 +10,8 @@
 #include <PubSubClient.h>
 
 /* DEFINES */
-// #define WIFI_SSID		"Ladon_TCC"
-// #define WIFI_PSK		"Mko09ijN"
-#define WIFI_SSID		"Rodrigues"
-#define WIFI_PSK		"23523373"
+#define WIFI_SSID		"Ladon_TCC"
+#define WIFI_PSK		"Mko09ijN"
 #define HOSTNAME		"ldevice"
 
 #define MQTT_BROKER		"lgateway.local"

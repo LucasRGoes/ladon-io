@@ -10,14 +10,16 @@
 #include <PubSubClient.h>
 
 /* DEFINES */
-#define WIFI_SSID		"Ladon_TCC"
-#define WIFI_PSK		"Mko09ijN"
+// #define WIFI_SSID		"Ladon_TCC"
+// #define WIFI_PSK		"Mko09ijN"
+#define WIFI_SSID		"Rodrigues"
+#define WIFI_PSK		"23523373"
 #define HOSTNAME		"ldevice"
 
 #define MQTT_BROKER		"lgateway.local"
 #define MQTT_CLIENT_ID	"ldevice"
 
-#define DHTPIN 			4     // what digital pin the DHT22 is conected to
+#define DHTPIN 			D4    // what digital pin the DHT22 is conected to
 #define POOLING_TIME	60000 // milliseconds
 
 #define DEVICE_ID		"vzyJYkThrw9u9gP5"

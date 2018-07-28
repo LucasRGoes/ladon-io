@@ -55,7 +55,7 @@ void sendPackage(String topic, String feature, float value) {
 
   // Creates JSON string and publishes it
   String toPublish = "{\"metrics\":{\"content\":\"number\",\"feature\":" + feature +
-                      "\"value\":" + String(value) + "}}";
+                      "\"value\":\"" + String(value) + "\",\"device\":\"" + DEVICE_ID + "\"}}";
   mqttClient.publish(topic.c_str(), toPublish.c_str());
 
 }

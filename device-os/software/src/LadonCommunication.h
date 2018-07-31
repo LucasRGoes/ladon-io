@@ -17,7 +17,7 @@ void mqttReconnect(void) {
     Serial.print("Attempting MQTT connection...");
 
     // Attempt to connect
-    if (mqttClient.connect(MQTT_CLIENT_ID)) {
+    if (mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
       Serial.println("Connected to MQTT broker");
     } else {
 
@@ -51,11 +51,20 @@ void handleCommunication(void) {
 
 }
 
-void sendPackage(String topic, String feature, float value) {
+void sendPackage(String topic, int feature, float value) {
 
   // Creates JSON string and publishes it
-  String toPublish = "{\"metrics\":{\"content\":\"number\",\"feature\":" + feature +
-                      "\"value\":\"" + String(value) + "\",\"device\":\"" + DEVICE_ID + "\"}}";
-  mqttClient.publish(topic.c_str(), toPublish.c_str());
+  String toPublish = "{\"metrics\":{\"content\":1,\"feature\":" + String(feature) +
+                      ",\"value\":\"" + String(value) + "\",\"device\":\"" + String(DEVICE_ID) + "\"}}";
+  /*
+   * Content 1: Number
+   * Feature 1: Temperature, 2: Humidity
+   */
+
+  if( mqttClient.publish( topic.c_str(), toPublish.c_str() ) ) {
+    Serial.println("Published message");
+  } else {
+    Serial.println("Couldn't publish message");
+  }
 
 }

@@ -14,8 +14,10 @@
 #define WIFI_PSK		"Mko09ijN"
 #define HOSTNAME		"ldevice"
 
-#define MQTT_BROKER		"lgateway.local"
+#define MQTT_BROKER		"192.168.0.2" // "lgateway.local"
 #define MQTT_CLIENT_ID	"ldevice"
+#define MQTT_USERNAME	"ladon"
+#define MQTT_PASSWORD	"ladon"
 
 #define DHTPIN 			D4    // what digital pin the DHT22 is conected to
 #define POOLING_TIME	60000 // milliseconds
@@ -58,8 +60,7 @@ void loop() {
 		float temperature = readTemperature();
 		if(!isnan(temperature)) {
 			Serial.println("Temperature: " + String(temperature));
-			topic += "temperature";
-			sendPackage(topic, "temperature", temperature);
+			sendPackage(topic + "1", 1, temperature);
 		} else {
 			Serial.println("Failed to read temperature!");
 		}
@@ -68,8 +69,7 @@ void loop() {
 		float humidity = readHumidity();
 		if(!isnan(humidity)) {
 			Serial.println("Humidity: " + String(humidity));
-			topic += "humidity";
-			sendPackage(topic, "humidity", humidity);
+			sendPackage(topic + "2", 2, humidity);
 		} else {
 			Serial.println("Failed to read humidity!");
 		}

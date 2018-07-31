@@ -91,6 +91,7 @@ apt-get install -y htop vim git curl
 
 # Installing necessary packages
 apt-get install -y openvpn
+apt-get install -y mosquitto-clients
 # apt-get install -y mosquitto mosquitto-clients
 
 echo -e "$prefix Updating timezone ..."
@@ -235,9 +236,9 @@ rm -r opencv-build
 #########################################
 # Installing Other Python Modules
 #########################################
-# echo -e "$prefix Installing python modules ..."
+echo -e "$prefix Installing python modules ..."
 # pip3 install kafka-python
-# pip3 install paho-mqtt
+pip3 install paho-mqtt
 
 #########################################
 # Installing Eclipse Kura
@@ -265,7 +266,7 @@ gdebi kura_3.2.0_raspberry-pi-2-3_installer.deb
 
 echo -e "$prefix Copying modules ..."
 cp -r ../../../brain-module $folderFiles
-# cp -r ../../../tongue-module $folderFiles
+cp -r ../../../fang-module $folderFiles
 cp files/etc/ladon/pm2/instances-ladon.json $folderEtc/pm2
 
 echo -e "$prefix Starting modules ..."

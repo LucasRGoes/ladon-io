@@ -16,3 +16,4 @@ Module responsible for capturing environmental data like temperature and humidit
 |:-----------|:----:|
 |Temperature |1     |
 |Humidity    |2     |
+|Photo       |3     |

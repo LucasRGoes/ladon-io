@@ -58,8 +58,8 @@ while True:
 			# Builds the object to be published
 			package = {
 				"metrics": {
-					"content": "file",
-					"feature": "photo",
+					"content": 2,		# File
+					"feature": 3,		# Photo
 					"value": value,
 					"device": args.id
 				}
@@ -67,7 +67,7 @@ while True:
 
 			# Publishes to the MQTT broker
 			publish.single(
-				"ladon/{0}/feature/{1}".format(args.id, "photo"),
+				"ladon/{0}/feature/{1}".format(args.id, 3),
 				json.dumps(package).encode("utf-8"),
 				hostname=args.broker,
 				auth={

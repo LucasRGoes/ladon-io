@@ -239,6 +239,8 @@ rm -r opencv-build
 echo -e "$prefix Installing python modules ..."
 # pip3 install kafka-python
 pip3 install paho-mqtt
+pip3 install scipy
+pip3 install scikit-learn
 
 #########################################
 # Installing Eclipse Kura

@@ -66,15 +66,18 @@ while True:
 			}
 
 			# Publishes to the MQTT broker
-			publish.single(
-				"ladon/{0}/feature/{1}".format(args.id, 3),
-				json.dumps(package).encode("utf-8"),
-				hostname=args.broker,
-				auth={
-					"username": args.username,
-					"password": args.password
-				}
-			)
+			try:
+				publish.single(
+					"ladon/{0}/feature/{1}".format(args.id, 3),
+					json.dumps(package).encode("utf-8"),
+					hostname=args.broker,
+					auth={
+						"username": args.username,
+						"password": args.password
+					}
+				)
+			except Error:
+				logger.error("couldn't connect to MQTT broker")
 
 	else:
 		# Closes VideoCaptureWrapper

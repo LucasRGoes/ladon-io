@@ -21,7 +21,7 @@ logger = logging.getLogger("MqttMongoWrapper")
 logger.info("started")
 
 # Creates a MongoWrapper
-# mongo = MongoWrapper(args.mongo_user, args.mongo_password)
+mongo = MongoWrapper(args.mongo_user, args.mongo_password)
 
 # Creates function to be called on message arrival
 def onMessage(client, userdata, message):

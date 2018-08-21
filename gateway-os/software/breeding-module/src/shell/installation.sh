@@ -92,7 +92,6 @@ apt-get install -y htop vim git curl
 # Installing necessary packages
 apt-get install -y openvpn
 apt-get install -y mosquitto-clients
-# apt-get install -y mosquitto mosquitto-clients
 
 echo -e "$prefix Updating timezone ..."
 # locale-gen en_US.UTF-8 pt_BR.UTF-8
@@ -237,7 +236,6 @@ rm -r opencv-build
 # Installing Other Python Modules
 #########################################
 echo -e "$prefix Installing python modules ..."
-# pip3 install kafka-python
 pip3 install paho-mqtt
 pip3 install scipy
 pip3 install scikit-learn

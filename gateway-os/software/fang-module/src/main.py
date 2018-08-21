@@ -23,50 +23,41 @@ logger = logging.getLogger("FangModule")
 logger.info("started")
 while True:
 
-	# Instantiates a VideoCaptureWrapper object for frame capturing
-	wrapper = VideoCaptureWrapper(args.camera)
+	try:
 
-	# Tries opening the VideoCaptureWrapper
-	if wrapper.open(args.attempts):
+		# Instantiates a VideoCaptureWrapper object for frame capturing
+		wrapper = VideoCaptureWrapper(args.camera)
 
-		# Captures frame and closes VideoCaptureWrapper
-		frame = wrapper.captureFrame()
-		wrapper.close()
+		# Tries opening the VideoCaptureWrapper
+		if wrapper.open(args.attempts):
 
-		# Stores the timestamp from the capture moment
-		timestamp = math.floor(time.time())
+			# Captures frame and closes VideoCaptureWrapper
+			frame = wrapper.captureFrame()
+			wrapper.close()
 
-		# # Verify the last name from the captures folder to get the next number
-		# fileNumber = 0
-		# fileList = os.listdir("captures")
-		# if fileList:
-		# 	# Directory has images
-		# 	sortedList = []
-		# 	for fileName in map( lambda f: int(f.replace(".png", "")), fileList ):
-		# 		sortedList.append(fileName)
-		# 	sortedList.sort()
-		# 	fileNumber = sortedList[-1] + 1
+			# Stores the timestamp from the capture moment
+			timestamp = math.floor(time.time())
 
-		# Gets frame path and saves it
-		fullPath = "{0}/captures/{1}.png".format(os.getcwd(), timestamp)
-		cv2.imwrite(fullPath, frame)
+			# Gets frame path and saves it
+			fullPath = "{0}/captures/{1}.png".format(os.getcwd(), timestamp)
+			cv2.imwrite(fullPath, frame)
 
-		# Loads image with base64 encoding
-		with open(fullPath, "rb") as imageFile:
-			value = base64.b64encode( imageFile.read() ).decode('utf-8')
+			# Loads image with base64 encoding
+			with open(fullPath, "rb") as imageFile:
+				value = base64.b64encode( imageFile.read() ).decode('utf-8')
 
-			# Builds the object to be published
-			package = {
-				"metrics": {
-					"content": 2,		# File
-					"feature": 3,		# Photo
-					"value": value,
-					"device": args.id
+				# Builds the object to be published
+				package = {
+					"metrics": {
+						"content": 2,		# File
+						"feature": 3,		# Photo
+						"value": value,
+						"device": args.id,
+						"timestamp": timestamp
+					}
 				}
-			}
 
-			# Publishes to the MQTT broker
-			try:
+				# Publishes to the MQTT broker
 				publish.single(
 					"ladon/{0}/feature/{1}".format(args.id, 3),
 					json.dumps(package).encode("utf-8"),
@@ -76,12 +67,16 @@ while True:
 						"password": args.password
 					}
 				)
-			except Error:
-				logger.error("couldn't connect to MQTT broker")
+				
 
-	else:
-		# Closes VideoCaptureWrapper
-		wrapper.close()
+		else:
+			# Closes VideoCaptureWrapper
+			wrapper.close()
 
-	# Sleeps for the chosen number of minutes
-	time.sleep(args.frequency * 60)
+		#endif: if wrapper.open(args.attempts)
+
+		# Sleeps for the chosen number of minutes
+		time.sleep(args.frequency * 60)
+
+	except Error as e:
+		logger.error(e)

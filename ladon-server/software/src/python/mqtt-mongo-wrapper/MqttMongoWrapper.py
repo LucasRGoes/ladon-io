@@ -41,11 +41,14 @@ def onMessage(client, userdata, message):
 
 			# Verifying if a timestamp has been informed
 			if 'timestamp' in package['metrics'] == True:
-				logger.info("has timestamp")
+				package["metrics"]["sentOn"] = package["metrics"]["timestamp"] * 1000
+				package["metrics"]["arrivedOn"] = package["arrivedOn"]
+				package["metrics"].pop("timestamp", None)
 			else:
-				logger.info("doesn't have timestamp")
+				package["metrics"]["sentOn"] = package["sentOn"]
+				package["metrics"]["arrivedOn"] = package["arrivedOn"]
 
-			# mongo.storePackage(package)
+			mongo.storePackage(package["metrics"])
 
 	except Exception as err:
 		logger.error("failure at onMessage: {}".format(err))

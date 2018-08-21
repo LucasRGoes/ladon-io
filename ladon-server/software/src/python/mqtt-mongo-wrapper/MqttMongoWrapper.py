@@ -28,7 +28,7 @@ def onMessage(client, userdata, message):
 
 	try:
 		# Parses message and stores arrival time
-		package = json.loads(message.payload).decode('utf-8')
+		package = json.loads( message.payload.decode('utf-8') )
 		package["arrivedOn"] = math.floor(time.time()) * 1000
 
 		# Verifies package type
@@ -38,6 +38,13 @@ def onMessage(client, userdata, message):
 			# ...
 		else:
 			logger.info("package arrived: {}".format(package))
+
+			# Verifying if a timestamp has been informed
+			if 'timestamp' in package['metrics'] == True:
+				logger.info("has timestamp")
+			else:
+				logger.info("doesn't have timestamp")
+
 			# mongo.storePackage(package)
 
 	except Exception as err:

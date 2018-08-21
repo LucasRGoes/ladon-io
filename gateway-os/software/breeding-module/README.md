@@ -1,4 +1,4 @@
-breeding-module (Process Management Module)
+breeding-module (Gateway Creation Module)
 ===========================================
 
 ### About ###

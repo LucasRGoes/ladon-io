@@ -90,7 +90,8 @@ echo -e "$prefix Installing basic packages ..."
 apt-get install -y htop vim git curl
 
 # Installing necessary packages
-# apt-get install -y mosquitto mosquitto-clients
+apt-get install -y openvpn
+apt-get install -y mosquitto-clients
 
 echo -e "$prefix Updating timezone ..."
 # locale-gen en_US.UTF-8 pt_BR.UTF-8
@@ -234,9 +235,10 @@ rm -r opencv-build
 #########################################
 # Installing Other Python Modules
 #########################################
-# echo -e "$prefix Installing python modules ..."
-# pip3 install kafka-python
-# pip3 install paho-mqtt
+echo -e "$prefix Installing python modules ..."
+pip3 install paho-mqtt
+pip3 install scipy
+pip3 install scikit-learn
 
 #########################################
 # Installing Eclipse Kura
@@ -264,7 +266,7 @@ gdebi kura_3.2.0_raspberry-pi-2-3_installer.deb
 
 echo -e "$prefix Copying modules ..."
 cp -r ../../../brain-module $folderFiles
-# cp -r ../../../tongue-module $folderFiles
+cp -r ../../../fang-module $folderFiles
 cp files/etc/ladon/pm2/instances-ladon.json $folderEtc/pm2
 
 echo -e "$prefix Starting modules ..."

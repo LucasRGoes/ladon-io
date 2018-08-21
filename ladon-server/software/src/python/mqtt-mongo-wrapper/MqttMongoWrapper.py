@@ -48,7 +48,7 @@ def onMessage(client, userdata, message):
 			photo = base64.b64decode( package["value"] )
 
 			# Building photoPath
-			photoPath = "var/log/ladon/captures/{}.png".format(package["sentOn"])
+			photoPath = "/var/log/ladon/captures/{}.png".format(package["sentOn"])
 
 			# Storing photo
 			file = open(photoPath, "wb")

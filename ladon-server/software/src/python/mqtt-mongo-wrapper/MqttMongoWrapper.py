@@ -42,7 +42,7 @@ def onMessage(client, userdata, message):
 		package = package["metrics"]
 
 		# Verifies package type
-		if package["content"] == "file":
+		if package["content"] == 2: # Photo
 			
 			# Extracting photo from package
 			photo = base64.b64decode( package["value"] )

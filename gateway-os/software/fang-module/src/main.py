@@ -58,25 +58,46 @@ while True:
 				}
 
 				# Publishes to the MQTT broker
-				publish.single(
-					"ladon/{0}/feature/{1}".format(args.id, 3),
-					json.dumps(package).encode("utf-8"),
-					hostname=args.broker,
-					auth={
-						"username": args.username,
-						"password": args.password
-					}
-				)
-				
+				publishedSuccesfully = False
+				while publishedSuccesfully == False:
+
+					try:
+						publish.single(
+							"ladon/{0}/feature/{1}".format(args.id, 3),
+							json.dumps(package).encode("utf-8"),
+							hostname=args.broker,
+							auth={
+								"username": args.username,
+								"password": args.password
+							}
+						)
+
+						publishedSuccesfully = True
+					except Exception as e:
+						logger.error(e)
+
+						# Sleeps for 5 seconds until next attempt
+						logger.warn('Retrying in 5 seconds ...')
+						time.sleep(5)
+
+				#endwhile: while publishedSuccesfully == False
+
+			# Sleeps for the chosen number of minutes
+			time.sleep(args.frequency * 60)
 
 		else:
 			# Closes VideoCaptureWrapper
 			wrapper.close()
 
+			# Sleeps for one minute before trying again
+			logger.warn('Retrying in 60 seconds ...')
+			time.sleep(60)
+
 		#endif: if wrapper.open(args.attempts)
 
-		# Sleeps for the chosen number of minutes
-		time.sleep(args.frequency * 60)
-
-	except Error as e:
+	except Exception as e:
 		logger.error(e)
+
+		# Sleeps for one minute before trying again
+		logger.warn('Retrying in 60 seconds ...')
+		time.sleep(60)

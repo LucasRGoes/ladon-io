@@ -1,6 +1,6 @@
 'use strict'
 
-const Package = use('App/Models/Package')
+const Package = use('App/Models/PackageV2')
 const Logger = use('Logger')
 
 class QueryController {
@@ -12,16 +12,16 @@ class QueryController {
 		const to = request.input('to', Math.floor(Date.now() / 1000))
 		const from = request.input('from', to - 86400)
 
-		return await Package.find({ id: params.id, description: params.description, timestamp: { '$gte': from, '$lt': to } })
-							.sort({ timestamp: -1 })
+		return await Package.find({ device: params.device, feature: params.feature, sentOn: { '$gte': from, '$lt': to } })
+							.sort({ sentOn: -1 })
 
 	}
 
 	async last({ request, params }) {
 
 		Logger.info("Last requested")
-		return await Package.find({ id: params.id, description: params.description })
-							.sort({ timestamp: -1 })
+		return await Package.find({ device: params.device, feature: params.feature })
+							.sort({ sentOn: -1 })
 							.limit(1)
 
 	}

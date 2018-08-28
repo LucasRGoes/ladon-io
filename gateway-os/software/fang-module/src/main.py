@@ -67,6 +67,7 @@ while True:
 							json.dumps(package).encode("utf-8"),
 							qos = 1,
 							hostname=args.broker,
+							client_id="FangModule",
 							auth={
 								"username": args.username,
 								"password": args.password

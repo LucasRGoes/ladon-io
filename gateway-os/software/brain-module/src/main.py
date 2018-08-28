@@ -109,7 +109,7 @@ while True:
 			while publishedSuccesfully == False:
 
 				try:
-					publish.multiple(messages, hostname=args.broker, auth={
+					publish.multiple(messages, hostname=args.broker, client_id="BrainModule", auth={
 						"username": args.username,
 						"password": args.password
 					})

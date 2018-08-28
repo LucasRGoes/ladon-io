@@ -12,8 +12,8 @@ class QueryController {
 		const to = request.input('to', Math.floor(Date.now() / 1000))
 		const from = request.input('from', to - 86400)
 
-		return await Package.find({ id: params.id, description: params.description, timestamp: { '$gte': from, '$lt': to } })
-							.sort({ timestamp: -1 })
+		return await Package.find({ id: params.id, description: params.description, sentOn: { '$gte': from, '$lt': to } })
+							.sort({ sentOn: -1 })
 
 	}
 
@@ -21,7 +21,7 @@ class QueryController {
 
 		Logger.info("Last requested")
 		return await Package.find({ id: params.id, description: params.description })
-							.sort({ timestamp: -1 })
+							.sort({ sentOn: -1 })
 							.limit(1)
 
 	}

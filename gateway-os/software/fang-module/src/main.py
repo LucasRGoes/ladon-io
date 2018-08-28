@@ -65,6 +65,7 @@ while True:
 						publish.single(
 							"ladon/{0}/feature/{1}".format(args.id, 3),
 							json.dumps(package).encode("utf-8"),
+							qos = 1,
 							hostname=args.broker,
 							auth={
 								"username": args.username,

@@ -82,7 +82,7 @@ class DataExtractor:
 		reshapedFrame = frameB.reshape((frameB.shape[0] * frameB.shape[1], 1))
 
 		# Creating K-Means object
-		clt = KMeans(n_clusters = 2, n_init = 3, random_state = 5, n_jobs = -1)
+		clt = KMeans(n_clusters = 2, n_init = 2, random_state = 5, n_jobs = 4)
 
 		# Calculating K-Means
 		self.logger.info("starting k-means clustering ...")

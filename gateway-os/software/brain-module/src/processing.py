@@ -32,10 +32,14 @@ class DataExtractor:
 		start = time.time()
 
 		# Background Extraction
+		self.logger.info("starting background extraction ...")
 		processedFrame = self.backgroundExtraction(frame)
+		self.logger.info("background extraction ended")
 
 		# Sample Detection and Data Extraction
+		self.logger.info("starting sample detection ...")
 		data = self.sampleDetection(processedFrame)
+		self.logger.info("sample detection ended")
 
 		end = time.time()
 		self.logger.info("ended, took {}s".format(end - start))
@@ -81,15 +85,19 @@ class DataExtractor:
 		clt = KMeans(n_clusters = 2, n_init = 3, random_state = 5, n_jobs = -1)
 
 		# Calculating K-Means
+		self.logger.info("starting k-means clustering ...")
 		clt.fit(reshapedFrame)
+		self.logger.info("k-means clustering ended")
 		labels = clt.labels_
 
 		# Turning K-Means results into a mask
 		mask = np.uint8(labels).reshape((height, width))
 
 		# Noise removal
+		self.logger.info("starting noise removal ...")
 		kernel = np.ones((3,3), np.uint8)
 		mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations = 3)
+		self.logger.info("noise removal ended")
 
 		# Applying mask to original image
 		kMeansFrame = cv2.bitwise_and(frame, frame, mask = mask)
@@ -111,7 +119,9 @@ class DataExtractor:
 		grayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 		# Finding its contours
+		self.logger.info("starting contour finding ...")
 		im2, contours, hierarchy = cv2.findContours(grayFrame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+		self.logger.info("contour finding ended")
 
 		# For each contour, store its area
 		contourAreas = []

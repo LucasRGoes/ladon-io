@@ -8,9 +8,9 @@ class QueryController {
 	async range({ request, params }) {
 
 		// Stores range parameters
-		Logger.info("Range requested")
-		const to = request.input('to', Math.floor(Date.now() / 1000))
-		const from = request.input('from', to - 86400)
+		const to = request.input('to', Math.floor(Date.now()))
+		const from = request.input('from', to - 86400000)
+		Logger.info(`Range requested for ${params.device} at feature ${params.feature} from ${from} to ${to}`)
 
 		return await Package.find({ device: params.device, feature: params.feature, sentOn: { '$gte': from, '$lt': to } })
 							.sort({ sentOn: -1 })
@@ -19,7 +19,7 @@ class QueryController {
 
 	async last({ request, params }) {
 
-		Logger.info("Last requested")
+		Logger.info(`Last requested for ${params.device} at feature ${params.feature}`)
 		return await Package.find({ device: params.device, feature: params.feature })
 							.sort({ sentOn: -1 })
 							.limit(1)
@@ -32,8 +32,8 @@ class QueryController {
 		return await Package.aggregate([
 			{ 
 				'$group': {
-					_id: { id: '$id' },
-					descriptions: { '$addToSet': '$description' }
+					_id: { id: '$device' },
+					features: { '$addToSet': '$feature' }
 				} 
 			}
 		])

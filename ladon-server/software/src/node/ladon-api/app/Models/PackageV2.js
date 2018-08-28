@@ -13,6 +13,8 @@ let packageSchema = mongoose.Schema({
 	device: String,
 	sentOn: Number
 
-})
+}, {
+	collection: 'packages_v2'
+})	
  
 module.exports = mongoose.model('PackageV2', packageSchema)

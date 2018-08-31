@@ -1,11 +1,11 @@
 ## IMPORTS ##
-import logging						# Logging: provides a set of convenience functions for simple logging usage
-import time							# Time: provides various time-related functions
+import logging									# Logging: provides a set of convenience functions for simple logging usage
+import time										# Time: provides various time-related functions
 
-import numpy as np 					# NumPy: the fundamental package for scientific computing with Python
-import cv2 							# OpenCV: usage ranges from interactive art, to mines inspection, stitching maps on the web or through advanced robotics
+import numpy as np 								# NumPy: the fundamental package for scientific computing with Python
+import cv2 										# OpenCV: usage ranges from interactive art, to mines inspection, stitching maps on the web or through advanced robotics
 
-from sklearn.cluster import KMeans 	# scikit-learn: Simple and efficient tools for data mining and data analysis
+from sklearn.cluster import MiniBatchKMeans 	# scikit-learn: Simple and efficient tools for data mining and data analysis
 
 ## CLASSES ##
 class DataExtractor:
@@ -82,7 +82,7 @@ class DataExtractor:
 		reshapedFrame = frameB.reshape((frameB.shape[0] * frameB.shape[1], 1))
 
 		# Creating K-Means object
-		clt = KMeans(n_clusters = 2, n_init = 2, random_state = 5, n_jobs = 4)
+		clt = MiniBatchKMeans(n_clusters = 2, random_state = 5)
 
 		# Calculating K-Means
 		self.logger.info("starting k-means clustering ...")

@@ -49,7 +49,7 @@ function subscribeToChannel () {
 					if(dashboardValue && dashboardTimestamp) {
 
 						if(feature === 'photo') {
-							dashboardValue.url = data.value.replace('/var/log/', '')
+							dashboardValue.setAttribute( 'src', `${ data.value.replace('/var/log/ladon/', '') }.png` )
 						} else {
 							const oldValue = parseFloat(dashboardValue.innerHTML)
 							const unity = dashboardValue.innerHTML.replace(oldValue.toString(), "")

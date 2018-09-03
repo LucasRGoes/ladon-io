@@ -1,11 +1,11 @@
 /* Websocket */
 let ws = null
 
-function requestData(channel, request, id = null, description = null) {
+function requestData(channel, request, device = null, feature = null) {
 	ws.getSubscription(channel).emit('message', {
 		request: request,
-		id: id,
-		description: description
+		device: device,
+		feature: feature
 	})
 }
 
@@ -26,36 +26,37 @@ function subscribeToChannel () {
 				if(message.status) {
 					// For each device found, set an interval for last data pooling
 					for(let device of message.data) {
-						const id = device._id.id
-						for(let description of device.descriptions) {
-							requestData('ladon', 'last', id, description)
-							setInterval(() => requestData('ladon', 'last', id, description), 60 * 1000)
-							requestData('ladon', 'time', id, description)
-							setInterval(() => requestData('ladon', 'time', id, description), 30 * 60 * 1000)
+						const deviceId = device._id.id
+						for(let feature of device.features) {
+							requestData('ladon', 'last', deviceId, feature)
+							setInterval(() => requestData('ladon', 'last', deviceId, feature), 60 * 1000) 	 // 60 seconds
+							requestData('ladon', 'time', deviceId, feature)
+							setInterval(() => requestData('ladon', 'time', deviceId, feature), 30 * 60 * 1000) // 30 minutes
 						}
 					}
 				} else {
-					setTimeout(() => requestData('ladon', 'list'), 10 * 1000)
+					setTimeout(() => requestData('ladon', 'list'), 10 * 1000) // 10 seconds
 				}
 				break
 			case 'last':
 				if(message.status) {
 					const data = message.data[0]
+					const feature = translateFeature(data.feature)
 
-					const dashboardValue = document.getElementById(data.description)
-					const dashboardTimestamp = document.getElementById(`${ data.description }_timestamp`)
+					const dashboardValue = document.getElementById(feature)
+					const dashboardTimestamp = document.getElementById(`${ feature }_timestamp`)
 
 					if(dashboardValue && dashboardTimestamp) {
 
-						if(data.description === 'photo') {
+						if(feature === 'photo') {
 							dashboardValue.url = data.value.replace('/var/log/', '')
 						} else {
 							const oldValue = parseFloat(dashboardValue.innerHTML)
 							const unity = dashboardValue.innerHTML.replace(oldValue.toString(), "")
-							dashboardValue.innerHTML = `${ data.value }${ unity }`
+							dashboardValue.innerHTML = `${ parseFloat(data.value).toFixed(1) }${ unity }`
 						}
 
-						dashboardTimestamp.innerHTML = moment(data.timestamp * 1000).fromNow()
+						dashboardTimestamp.innerHTML = moment(data.sentOn).fromNow()
 					}
 				}
 				break
@@ -65,13 +66,14 @@ function subscribeToChannel () {
 					let labels = []
 					let dataArray = []
 					for(let data of message.data) {
-						labels.unshift( moment(data.timestamp * 1000).format('HH:mm') )
+						labels.unshift( moment(data.sentOn).format('HH:mm') )
 						dataArray.unshift(data.value)
 					}
 
-					if(message.data[0].description === 'temperature') {
+					const feature = translateFeature(message.data[0].feature)
+					if(feature === 'temperature') {
 						updateChart(temperatureChart, labels, dataArray)
-					} else if(message.data[0].description === 'humidity') {
+					} else if(feature === 'humidity') {
 						updateChart(humidityChart, labels, dataArray)
 					}
 				}

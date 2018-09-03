@@ -14,9 +14,9 @@ class LadonController {
 
     this.apiUrl = Env.get('API_URL')
     this.apiHeaders = {
-		'Authorization': `Bearer ${ Env.get('API_KEY') }`,
-		'Accept': 'application/json'
-	}
+      'Authorization': `Bearer ${ Env.get('API_KEY') }`,
+      'Accept': 'application/json'
+    }
 
     Logger.info(`Socket ${ this.socket.id } connected`)
 
@@ -40,12 +40,12 @@ class LadonController {
   			requestOptions.url += '/list'
   			break
   		case 'last':
-        requestOptions.url += `/id/${ message.id }/description/${ message.description }/last`
+        requestOptions.url += `/device/${ message.device }/feature/${ message.feature }/last`
   			break
   		case 'time':
-        const toT = Math.floor(Date.now() / 1000)
-        const fromT = toT - 3600
-        requestOptions.url += `/id/${ message.id }/description/${ message.description }?from=${ fromT }&to=${ toT }`
+        const toT = Math.floor(Date.now())
+        const fromT = toT - 3600000
+        requestOptions.url += `/device/${ message.device }/feature/${ message.feature }?from=${ fromT }&to=${ toT }`
   			break
 
   	}

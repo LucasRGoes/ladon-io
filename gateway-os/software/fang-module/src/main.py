@@ -65,7 +65,9 @@ while True:
 						publish.single(
 							"ladon/{0}/feature/{1}".format(args.id, 3),
 							json.dumps(package).encode("utf-8"),
+							qos = 1,
 							hostname=args.broker,
+							client_id="FangModule",
 							auth={
 								"username": args.username,
 								"password": args.password

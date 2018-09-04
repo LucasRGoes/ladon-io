@@ -48,12 +48,16 @@ function subscribeToChannel () {
 
 					if(dashboardValue && dashboardTimestamp) {
 
-						if(feature === 'photo') {
-							dashboardValue.setAttribute( 'src', `${ data.value.replace('/var/log/ladon/', '') }` )
-						} else {
-							const oldValue = parseFloat(dashboardValue.innerHTML)
-							const unity = dashboardValue.innerHTML.replace(oldValue.toString(), "")
-							dashboardValue.innerHTML = `${ parseFloat(data.value).toFixed(1) }${ unity }`
+						switch(feature) {
+							case 'photo':
+								dashboardValue.setAttribute( 'src', `${ data.value.replace('/var/log/ladon/', '') }` )
+								break
+							case 'temperature':
+								dashboardValue.innerHTML = `${ parseFloat(data.value).toFixed(2) }°C`
+								break
+							case 'humidity':
+								dashboardValue.innerHTML = `${ parseFloat(data.value).toFixed(2) }%`
+								break
 						}
 
 						dashboardTimestamp.innerHTML = moment(data.sentOn).fromNow()

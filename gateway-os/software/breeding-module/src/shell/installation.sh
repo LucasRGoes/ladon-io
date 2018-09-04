@@ -80,6 +80,7 @@ mkdir $folderEtc/pm2
 mkdir -p $folderFiles
 mkdir -p $folderLog
 mkdir $folderLog/captures
+mkdir $folderLog/processed
 
 #########################################
 # Installing Basic Packages

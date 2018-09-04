@@ -21,24 +21,46 @@ logger = logging.getLogger("MqttMongoWrapper")
 logger.info("started")
 
 # Creates a MongoWrapper
-# mongo = MongoWrapper(args.mongo_user, args.mongo_password)
+mongo = MongoWrapper(args.mongo_user, args.mongo_password)
 
 # Creates function to be called on message arrival
 def onMessage(client, userdata, message):
 
 	try:
 		# Parses message and stores arrival time
-		package = json.loads(message.payload).decode('utf-8')
-		package["arrivedOn"] = math.floor(time.time()) * 1000
+		package = json.loads( message.payload.decode('utf-8') )
+		package["metrics"]["arrivedOn"] = math.floor(time.time()) * 1000
+
+		# Verifying if a timestamp has been informed
+		if "timestamp" in package["metrics"] == True:
+			package["metrics"]["sentOn"] = package["metrics"]["timestamp"] * 1000
+			package["metrics"].pop("timestamp", None)
+		else:
+			package["metrics"]["sentOn"] = package["sentOn"]	
+
+		# Using only metrics
+		package = package["metrics"]
 
 		# Verifies package type
-		if package["metrics"]["content"] == "file":
-			logger.info("package with file arrived")
+		if package["content"] == 2: # Photo
+			
+			# Extracting photo from package
+			photo = base64.b64decode( package["value"] )
 
-			# ...
-		else:
-			logger.info("package arrived: {}".format(package))
-			# mongo.storePackage(package)
+			# Building photoPath
+			photoPath = "/var/log/ladon/captures/{}.png".format(package["sentOn"])
+
+			# Storing photo
+			file = open(photoPath, "wb")
+			file.write(photo)
+			file.close()
+
+			# Substituting value at package to the path
+			package["value"] = photoPath
+
+		# Storing package at MongoDB
+		logger.info("package arrived and being stored: {}".format(package))
+		mongo.storePackage(package)
 
 	except Exception as err:
 		logger.error("failure at onMessage: {}".format(err))

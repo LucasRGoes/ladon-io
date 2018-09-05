@@ -60,7 +60,7 @@ function subscribeToChannel () {
 					}
 
 					// Requesting maturity
-					setTimeout(() => requestData('ladon', 'classify', null, maturityData), 5 * 1000)        // 5 seconds
+					setTimeout(() => requestData('ladon', 'classify', null, maturityData), 2 * 1000)        // 5 seconds
 					setInterval(() => requestData('ladon', 'classify', null, maturityData), 60 * 60 * 1000) // 1 hour
 
 				} else {
@@ -130,6 +130,13 @@ function subscribeToChannel () {
 							break
 					}
 
+				}
+				break
+			case 'classify':
+				if(message.status) {
+					const data = message.data[0]
+					const dashboardValue = document.getElementById('maturity')
+					dashboardValue.innerHTML = `${ data.maturity }`
 				}
 				break
 

@@ -15,7 +15,7 @@ class LadonController {
     this.apiUrl = Env.get('API_URL')
     this.apiHeaders = {
       'Authorization': `Bearer ${ Env.get('API_KEY') }`,
-      'Accept': 'application/json'
+      'Accept': 'application/json',
     }
 
     Logger.info(`Socket ${ this.socket.id } connected`)
@@ -63,10 +63,14 @@ class LadonController {
         status: true
       }
 
-      console.log(body)
-
       if (!error && response.statusCode == 200) {
-        answer.data = JSON.parse(body)
+
+        try {
+          answer.data = JSON.parse(body)
+        } catch(err) {
+          answer.data = body
+        }
+
       } else {
         answer.status = false
       }

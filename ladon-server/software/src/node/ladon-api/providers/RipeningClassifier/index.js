@@ -18,7 +18,7 @@ class RipeningClassifierService {
 	    response = response.replace('\'', '"')
 	    response = JSON.parse(response)[0]
 
-	    return { maturity: response }
+	    return [{ maturity: response }]
 	} catch(err) {
 		return err.stderr.toString('utf8')
 	}

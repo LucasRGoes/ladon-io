@@ -48,6 +48,7 @@ class QueryController {
 		const aMax = request.input('a_max')
 		const aMin = request.input('a_min')
 		const lMedian = request.input('L_median')
+		Logger.info("Classify requested")
 
 		return await RipeningClassifier.classify(bMax, aMax, aMin, lMedian)
 

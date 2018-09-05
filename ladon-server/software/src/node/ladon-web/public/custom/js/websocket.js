@@ -1,6 +1,14 @@
 /* Websocket */
 let ws = null
 
+/* Maturity Data */
+let maturityData = {
+	'b_max': null,
+	'a_max': null,
+	'a_min': null,
+	'L_median': null
+}
+
 function requestData(channel, request, device = null, feature = null) {
 	ws.getSubscription(channel).emit('message', {
 		request: request,
@@ -28,12 +36,33 @@ function subscribeToChannel () {
 					for(let device of message.data) {
 						const deviceId = device._id.id
 						for(let feature of device.features) {
+
+							// Requesting last for this feature
 							requestData('ladon', 'last', deviceId, feature)
-							setInterval(() => requestData('ladon', 'last', deviceId, feature), 60 * 1000) 	 // 60 seconds
-							requestData('ladon', 'time', deviceId, feature)
-							setInterval(() => requestData('ladon', 'time', deviceId, feature), 30 * 60 * 1000) // 30 minutes
+
+							// Setting intervals
+							switch( translateFeature(feature) ) {
+
+								case 'temperature':
+								case 'humidity':
+									setInterval(() => requestData('ladon', 'last', deviceId, feature), 60 * 1000) 	   // 60 seconds
+									requestData('ladon', 'time', deviceId, feature)
+									setInterval(() => requestData('ladon', 'time', deviceId, feature), 30 * 60 * 1000) // 30 minutes
+									break
+
+								default:
+									setInterval(() => requestData('ladon', 'last', deviceId, feature), 60 * 60 * 1000) // 1 hour
+									break
+
+							}
+						
 						}
 					}
+
+					// Requesting maturity
+					setTimeout(() => requestData('ladon', 'classify', null, maturityData), 5 * 1000)        // 5 seconds
+					setInterval(() => requestData('ladon', 'classify', null, maturityData), 60 * 60 * 1000) // 1 hour
+
 				} else {
 					setTimeout(() => requestData('ladon', 'list'), 10 * 1000) // 10 seconds
 				}
@@ -61,6 +90,23 @@ function subscribeToChannel () {
 						}
 
 						dashboardTimestamp.innerHTML = moment(data.sentOn).fromNow()
+					} else {
+
+						switch(feature) {
+							case 'b_max':
+								maturityData['b_max'] = parseFloat(data.value)
+								break
+							case 'a_max':
+								maturityData['a_max'] = parseFloat(data.value)
+								break
+							case 'a_min':
+								maturityData['a_min'] = parseFloat(data.value)
+								break
+							case 'L_median':
+								maturityData['L_median'] = parseFloat(data.value)
+								break
+						}
+
 					}
 				}
 				break

@@ -24,7 +24,7 @@ class LadonController {
   
   onMessage (message) {
 
-  	Logger.info(`Socket ${ this.socket.id } requested: ${ message.request }`)
+  	Logger.info(`Socket ${ this.socket.id } requested: ${ JSON.stringify(message) }`)
 
   	// Preparing variables to be used
   	const socket = this.socket
@@ -47,6 +47,11 @@ class LadonController {
         const fromT = toT - 3600000
         requestOptions.url += `/device/${ message.device }/feature/${ message.feature }?from=${ fromT }&to=${ toT }`
   			break
+      case 'classify':
+        requestOptions.url += '/classify'
+        requestOptions.method = 'POST'
+        requestOptions.json = message.feature
+        break
 
   	}
 
@@ -57,6 +62,8 @@ class LadonController {
         response: message.request,
         status: true
       }
+
+      console.log(body)
 
       if (!error && response.statusCode == 200) {
         answer.data = JSON.parse(body)

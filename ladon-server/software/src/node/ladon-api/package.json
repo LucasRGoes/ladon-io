@@ -25,6 +25,7 @@
     "@adonisjs/ignitor": "^2.0.6",
     "@adonisjs/lucid": "^5.0.3",
     "adonis-4-mongoose": "^1.0.8",
+    "await-spawn": "2.1.1",
     "sqlite3": "^4.0.0"
   },
   "devDependencies": {},

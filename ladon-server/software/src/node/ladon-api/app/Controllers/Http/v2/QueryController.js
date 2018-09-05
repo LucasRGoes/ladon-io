@@ -2,6 +2,7 @@
 
 const Package = use('App/Models/PackageV2')
 const Logger = use('Logger')
+const RipeningClassifier = use('RipeningClassifier')
 
 class QueryController {
 
@@ -37,6 +38,18 @@ class QueryController {
 				} 
 			}
 		])
+
+	}
+
+	async classify({ request }) {
+
+		// Stores classify parameters
+		const bMax = request.input('b_max')
+		const aMax = request.input('a_max')
+		const aMin = request.input('a_min')
+		const lMedian = request.input('L_median')
+
+		return await RipeningClassifier.classify(bMax, aMax, aMin, lMedian)
 
 	}
 

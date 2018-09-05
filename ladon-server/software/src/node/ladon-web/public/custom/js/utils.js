@@ -12,5 +12,13 @@ const translateFeature = (feature) => {
 			return 'humidity'
 		case 3:
 			return 'photo'
+		case 4:
+			return 'b_max'
+		case 5:
+			return 'a_max'
+		case 6:
+			return 'a_min'
+		case 7:
+			return 'L_median'
 	}
 }

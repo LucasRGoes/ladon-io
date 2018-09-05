@@ -26,6 +26,11 @@ class UserController {
 		return view.render('dashboard.samples')
 	}
 
+	async batch({ request, view, auth }) {
+		request.user = await auth.getUser()
+		return view.render('dashboard.batch')
+	}
+
 	async login({ request, response, auth }) {
 
 		const { email, password } = request.only(['email', 'password'])

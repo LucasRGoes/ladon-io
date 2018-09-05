@@ -73,13 +73,17 @@ function subscribeToChannel () {
 						labels.unshift( moment(data.sentOn).format('HH:mm') )
 						dataArray.unshift(data.value)
 					}
-
+					
 					const feature = translateFeature(message.data[0].feature)
-					if(feature === 'temperature') {
-						updateChart(temperatureChart, labels, dataArray)
-					} else if(feature === 'humidity') {
-						updateChart(humidityChart, labels, dataArray)
+					switch(feature) {
+						case 'temperature':
+							updateChart(temperatureChart, labels, dataArray)
+							break
+						case 'humidity':
+							updateChart(humidityChart, labels, dataArray)
+							break
 					}
+
 				}
 				break
 

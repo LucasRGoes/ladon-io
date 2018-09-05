@@ -19,6 +19,7 @@ const Route = use('Route')
 Route.get('/', 'UserController.index')
 Route.get('/environment', 'UserController.environment').middleware('auth')
 Route.get('/samples', 'UserController.samples').middleware('auth')
+Route.get('/batch', 'UserController.batch').middleware('auth')
 
 /* OTHER ROUTES */
 Route.post('/login', 'UserController.login')

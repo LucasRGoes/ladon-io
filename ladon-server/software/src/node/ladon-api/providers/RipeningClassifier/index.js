@@ -13,9 +13,6 @@ class RipeningClassifierService {
 	    
 	    // Cleaning procedures
 	    response = response.toString('utf8')
-	    response = response.replace('\n', '')
-	    response = response.replace('\'', '"')
-	    response = response.replace('\'', '"')
 	    response = JSON.parse(response)[0]
 
 	    return [{ maturity: response }]

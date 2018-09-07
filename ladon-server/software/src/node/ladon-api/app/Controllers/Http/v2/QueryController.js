@@ -1,8 +1,9 @@
 'use strict'
 
-const Package = use('App/Models/PackageV2')
-const Logger = use('Logger')
+const Package            = use('App/Models/PackageV2')
+const Logger             = use('Logger')
 const RipeningClassifier = use('RipeningClassifier')
+const DataExtractor      = use('DataExtractor')
 
 class QueryController {
 
@@ -51,6 +52,16 @@ class QueryController {
 		Logger.info("Classify requested")
 
 		return await RipeningClassifier.classify(bMax, aMax, aMin, lMedian)
+
+	}
+
+	async extract({ request }) {
+
+		// Stores classify parameters
+		const image = request.input('image')
+		Logger.info("Extract requested")
+
+		return await DataExtractor.extract(image)
 
 	}
 

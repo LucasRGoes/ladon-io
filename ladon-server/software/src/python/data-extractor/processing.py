@@ -15,9 +15,6 @@ class DataExtractor:
 	# Initializes an instance of PhotoExtractor
 	def __init__(self, aMinThresh, aMaxThresh, bMinThresh, bMaxThresh):
 
-		# Creates logger
-		self.logger = logging.getLogger("DataExtractor")
-
 		# Stores variables
 		self.aMinThresh = aMinThresh
 		self.aMaxThresh = aMaxThresh
@@ -28,21 +25,12 @@ class DataExtractor:
 	# --------
 	# Starts the extraction on the chosen frame
 	def extract(self, frame):
-		self.logger.info("started ...")
-		start = time.time()
 
 		# Background Extraction
-		self.logger.info("starting background extraction ...")
 		processedFrame = self.backgroundExtraction(frame)
-		self.logger.info("background extraction ended")
 
 		# Sample Detection and Data Extraction
-		self.logger.info("starting sample detection ...")
 		data = self.sampleDetection(processedFrame, frame)
-		self.logger.info("sample detection ended")
-
-		end = time.time()
-		self.logger.info("ended, took {}s".format(end - start))
 
 		return data
 
@@ -85,28 +73,24 @@ class DataExtractor:
 		clt = MiniBatchKMeans(n_clusters = 2, random_state = 5)
 
 		# Calculating K-Means
-		self.logger.info("starting k-means clustering ...")
 		clt.fit(reshapedFrame)
-		self.logger.info("k-means clustering ended")
 		labels = clt.labels_
 
 		# Turning K-Means results into a mask
 		mask = np.uint8(labels).reshape((height, width))
 
 		# Noise removal
-		self.logger.info("starting noise removal ...")
 		kernel = np.ones((3,3), np.uint8)
 		mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations = 3)
-		self.logger.info("noise removal ended")
 
 		# Applying mask to original image
 		kMeansFrame = cv2.bitwise_and(frame, frame, mask = mask)
 
-		# # Verifying if the mask needs inversal
-		# if self.checkMaskResult(kMeansFrame) == True:
-		# 	# Inverting mask and applying to original image
-		# 	mask = 1 - mask
-		# 	kMeansFrame = cv2.bitwise_and(frame, frame, mask = mask)
+		# Verifying if the mask needs inversal
+		if self.checkMaskResult(kMeansFrame) == True:
+			# Inverting mask and applying to original image
+			mask = 1 - mask
+			kMeansFrame = cv2.bitwise_and(frame, frame, mask = mask)
 
 		return kMeansFrame
 
@@ -119,9 +103,7 @@ class DataExtractor:
 		grayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 		# Finding its contours
-		self.logger.info("starting contour finding ...")
 		im2, contours, hierarchy = cv2.findContours(grayFrame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-		self.logger.info("contour finding ended")
 
 		# For each contour, store its area
 		contourAreas = []
@@ -138,7 +120,8 @@ class DataExtractor:
 
 		# Creates the objects that holds the extracted data
 		drawImage = originalFrame.copy()
-		centers = []
+		centerX = []
+		centerY = []
 		bMax = []
 		aMax = []
 		aMin = []
@@ -153,7 +136,8 @@ class DataExtractor:
 			M = cv2.moments( contours[acceptedIndex] )
 			cX = int(M["m10"] / M["m00"])
 			cY = int(M["m01"] / M["m00"])
-			centers.append([cX, cY])
+			centerX.append(cX)
+			centerY.append(cY)
 			
 			# Creating contour by drawing it and mask by splitting
 			cv2.drawContours(drawImage, contours, acceptedIndex, (0,0,255), 2)
@@ -179,15 +163,16 @@ class DataExtractor:
 			data_b = data_b[data_b != 0]
 
 			# Extracts information and stores it
-			bMax.append( np.amax(data_b) )
-			aMax.append( np.amax(data_a) )
-			aMin.append( np.amin(data_a) )
-			lMedian.append( np.median(data_L) )
+			bMax.append( float( np.amax(data_b) ) )
+			aMax.append( float( np.amax(data_a) ) )
+			aMin.append( float( np.amin(data_a) ) )
+			lMedian.append( float( np.median(data_L) ) )
 
 		# Calculating the average for each extracted color space data
 		data = {
 			'draw_image': drawImage,
-			'centers': centers,
+			'center_x': centerX,
+			'center_y': centerY,
 			'b_max': bMax,
 			'a_max': aMax,
 			'a_min': aMin,

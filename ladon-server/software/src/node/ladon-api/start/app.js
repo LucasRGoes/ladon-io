@@ -20,6 +20,7 @@ const providers = [
   '@adonisjs/lucid/providers/LucidProvider',
   'adonis-4-mongoose/provider/Mongoose',
   path.join(__dirname, '..', 'providers', 'RipeningClassifier/Provider'),
+  path.join(__dirname, '..', 'providers', 'DataExtractor/Provider')
 ]
 
 /*
@@ -49,7 +50,8 @@ const aceProviders = [
 */
 const aliases = {
 	Mongoose: 'Adonis/Addons/AdonisMongoose',
-	RipeningClassifier: 'Ladon/Addons/RipeningClassifier'
+	RipeningClassifier: 'Ladon/Addons/RipeningClassifier',
+  DataExtractor: 'Ladon/Addons/DataExtractor'
 }
 
 /*

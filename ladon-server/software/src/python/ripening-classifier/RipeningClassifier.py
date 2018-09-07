@@ -1,4 +1,5 @@
 ## IMPORTS ##
+import json
 import sys
 import numpy as np
 import pandas as pd
@@ -31,7 +32,7 @@ toClassify = pd.DataFrame(toClassify).T
 classifiedData = svclassifier.predict(toClassify)
 
 # Sending answer
-print(classifiedData)
+print( json.dumps( classifiedData.tolist() ) )
 sys.stdout.flush()
 
 sys.exit()

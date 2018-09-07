@@ -38,7 +38,7 @@ convertedImage = cv2.imencode('.jpg', data['draw_image'])[1].tostring()
 data['draw_image'] = base64.b64encode( convertedImage ).decode('utf-8')
 
 # Sending answer
-print(data)
+print( json.dumps(data) )
 sys.stdout.flush()
 
 sys.exit()

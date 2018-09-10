@@ -1,10 +1,10 @@
 ## IMPORTS ##
-import json
-import sys
-import numpy as np
-import pandas as pd
+import json 					# Json: is a lightweight data interchange format inspired by JavaScript object literal syntax
+import sys 						# Sys: system-specific parameters and functions
+import numpy as np 				# NumPy: the fundamental package for scientific computing with Python
+import pandas as pd 			# Pandas: easy-to-use data structures and data analysis tools for Python
 
-from sklearn.svm import SVC
+from sklearn.svm import SVC 	# scikit-learn: Simple and efficient tools for data mining and data analysis
 
 ## MAIN ##
 
@@ -31,7 +31,7 @@ toClassify = pd.DataFrame(toClassify).T
 # Classifying data
 classifiedData = svclassifier.predict(toClassify)
 
-# Sending answer
+# Printing answer
 print( json.dumps( classifiedData.tolist() ) )
 sys.stdout.flush()
 

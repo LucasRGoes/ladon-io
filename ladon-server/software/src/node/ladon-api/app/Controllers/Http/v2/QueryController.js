@@ -42,6 +42,16 @@ class QueryController {
 
 	}
 
+	async process({ request }) {
+
+		// Stores classify parameters
+		const image = request.input('image')
+		Logger.info("Process requested")
+
+		return await DataExtractor.extract(image)
+
+	}
+
 	async classify({ request }) {
 
 		// Stores classify parameters
@@ -52,16 +62,6 @@ class QueryController {
 		Logger.info("Classify requested")
 
 		return await RipeningClassifier.classify(bMax, aMax, aMin, lMedian)
-
-	}
-
-	async extract({ request }) {
-
-		// Stores classify parameters
-		const image = request.input('image')
-		Logger.info("Extract requested")
-
-		return await DataExtractor.extract(image)
 
 	}
 

@@ -49,9 +49,9 @@ const aceProviders = [
 |
 */
 const aliases = {
-	Mongoose: 'Adonis/Addons/AdonisMongoose',
-	RipeningClassifier: 'Ladon/Addons/RipeningClassifier',
-  DataExtractor: 'Ladon/Addons/DataExtractor'
+	Mongoose:            'Adonis/Addons/AdonisMongoose',
+	RipeningClassifier:  'Ladon/Addons/RipeningClassifier',
+  DataExtractor:       'Ladon/Addons/DataExtractor'
 }
 
 /*

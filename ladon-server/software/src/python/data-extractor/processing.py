@@ -168,7 +168,7 @@ class DataExtractor:
 			aMin.append( float( np.amin(data_a) ) )
 			lMedian.append( float( np.median(data_L) ) )
 
-		# Calculating the average for each extracted color space data
+		# Building data to be returned
 		data = {
 			'draw_image': drawImage,
 			'center_x': centerX,

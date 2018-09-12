@@ -1,7 +1,12 @@
 'use strict'
 
-const User = use('App/Models/User')
-const Logger = use('Logger')
+const Drive   = use('Drive')
+const Env     = use('Env')
+const Logger  = use('Logger')
+const Helpers = use('Helpers')
+const User    = use('App/Models/User')
+
+const rp = require('request-promise-native')
 
 class UserController {
 
@@ -29,6 +34,11 @@ class UserController {
 	async batch({ request, view, auth }) {
 		request.user = await auth.getUser()
 		return view.render('dashboard.batch')
+	}
+
+	async example({ request, view, auth }) {
+		request.user = await auth.getUser()
+		return view.render('dashboard.example')
 	}
 
 	async login({ request, response, auth }) {
@@ -71,6 +81,39 @@ class UserController {
 		} finally {
 			response.redirect('/')
 		}
+
+	}
+
+	async upload({ request }) {
+
+		const image = request.file('file', {
+			types: ['image'],
+			size: '2mb'
+		})
+
+		await image.move(Helpers.tmpPath('uploads'), {
+			name: 'example.jpg'
+		})
+
+		if (!image.moved()) {
+			return image.error()
+		}
+
+		const filePath = Helpers.tmpPath('uploads/example.jpg')
+
+		let encodedFile = await Drive.get(filePath)
+		encodedFile = encodedFile.toString('base64')
+		await Drive.delete(filePath)
+
+		return await rp({
+			url: `${ Env.get('API_URL') }/process`,
+			method: 'POST',
+			headers: {
+				'Authorization': `Bearer ${ Env.get('API_KEY') }`,
+				'Accept': 'application/json'
+			},
+			json: { image: encodedFile }
+		})
 
 	}
 

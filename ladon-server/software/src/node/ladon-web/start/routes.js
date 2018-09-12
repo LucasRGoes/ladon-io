@@ -16,12 +16,15 @@
 const Route = use('Route')
 
 /* PAGES */
-Route.get('/', 'UserController.index')
-Route.get('/environment', 'UserController.environment').middleware('auth')
-Route.get('/samples', 'UserController.samples').middleware('auth')
-Route.get('/batch', 'UserController.batch').middleware('auth')
+Route.get('/',            	  'UserController.index')
+Route.get('/environment', 	  'UserController.environment').middleware('auth')
+Route.get('/samples',     	  'UserController.samples')    .middleware('auth')
+Route.get('/batch',       	  'UserController.batch')      .middleware('auth')
+Route.get('/example',     	  'UserController.example')    .middleware('auth')
 
 /* OTHER ROUTES */
-Route.post('/login', 'UserController.login')
-Route.get('/logout', 'UserController.logout')
-//Route.post('/user', 'UserController.create')
+Route.post('/login',      	  'UserController.login')
+Route.get('/logout',      	  'UserController.logout')
+//Route.post('/user',     	  'UserController.create')
+
+Route.post('/example/upload', 'UserController.upload')

@@ -20,6 +20,9 @@
 
         <!-- Custom Theme Style -->
         {{ css('build/css/custom.min.css') }}
+
+        <!-- Custom Content Style -->
+        @!section('custom_css')
     </head>
     <body class="nav-md">
         <div class="container body">
@@ -64,5 +67,8 @@
         {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
         {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
         {{ script('custom/js/websocket.js') }}
+
+        <!-- Custom Content Script -->
+        @!section('custom_js')
     </body>
 </html>

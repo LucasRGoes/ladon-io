@@ -1,0 +1,31 @@
+@layout('layout.master')
+
+@section('custom_css')
+	<!-- Dropzone.js -->
+	{{ css('vendors/dropzone/dist/min/dropzone.min.css') }}
+@endsection
+
+@section('content')
+	<div class="right_col" role="main">
+		<div>
+			@!component('components.page_title', title = 'Example')
+			<div class="clearfix"></div>
+
+			@!component('components.file_upload', id = 'file_upload', csrfField = csrfField())
+			<div class="clearfix"></div>
+
+			@!component('components.page_title', title = 'Processed File')
+			<div class="clearfix"></div>
+
+			@!component('components.uploaded_image', id = 'processed_file')
+		</div>
+	</div>
+@endsection
+
+@section('custom_js')
+	<!-- Dropzone.js -->
+    {{ script('vendors/dropzone/dist/min/dropzone.min.js') }}
+
+    <!-- Custom Dropzone Script -->
+    {{ script('custom/js/dropzone.js') }}
+@endsection

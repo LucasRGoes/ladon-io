@@ -3,7 +3,7 @@
 const Env = use('Env')
 const Logger = use('Logger')
 
-const request = require('request');
+const request = require('request')
 
 class LadonController {
 

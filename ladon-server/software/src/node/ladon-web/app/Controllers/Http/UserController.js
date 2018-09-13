@@ -88,7 +88,7 @@ class UserController {
 
 		const image = request.file('file', {
 			types: ['image'],
-			size: '20mb'
+			size: '5mb'
 		})
 
 		const fileName = image['stream']['filename']
@@ -107,22 +107,15 @@ class UserController {
 		encodedFile = encodedFile.toString('base64')
 		await Drive.delete(filePath)
 
-		console.log('teste')
-
-		try {
-			return await rp({
-				url: `${ Env.get('API_URL') }/process`,
-				method: 'POST',
-				headers: {
-					'Authorization': `Bearer ${ Env.get('API_KEY') }`,
-					'Accept': 'application/json'
-				},
-				json: { image: encodedFile }
-			})
-		} catch(err) {
-			console.log(err)
-			return {}
-		}
+		return await rp({
+			url: `${ Env.get('API_URL') }/process`,
+			method: 'POST',
+			headers: {
+				'Authorization': `Bearer ${ Env.get('API_KEY') }`,
+				'Accept': 'application/json'
+			},
+			json: { image: encodedFile }
+		})
 
 	}
 

@@ -107,15 +107,18 @@ class UserController {
 		encodedFile = encodedFile.toString('base64')
 		await Drive.delete(filePath)
 
-		return await rp({
-			url: `${ Env.get('API_URL') }/process`,
-			method: 'POST',
-			headers: {
-				'Authorization': `Bearer ${ Env.get('API_KEY') }`,
-				'Accept': 'application/json'
-			},
-			json: { image: encodedFile }
-		})
+		try {
+			return await rp({
+				url: `${ Env.get('API_URL') }/process`,
+				method: 'POST',
+				headers: {
+					'Authorization': `Bearer ${ Env.get('API_KEY') }`
+				},
+				json: { image: encodedFile }
+			})
+		} catch(err) {
+			return `Error at processing: ${ JSON.stringify(err.response.body) }`
+		}
 
 	}
 

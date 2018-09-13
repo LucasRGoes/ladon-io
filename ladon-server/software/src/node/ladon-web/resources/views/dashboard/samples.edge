@@ -1,22 +1,38 @@
 @layout('layout.master')
 
+@section('custom_css')
+@endsection
+
 @section('content')
 	<div class="right_col" role="main">
 		<div>
-			<div class="page-title">
-				<div class="title_left">
-					<h3>Samples</h3>
-				</div>
-			</div>
-
+			@!component('components.page_title', title = 'Maturity Information')
 			<div class="clearfix"></div>
 
 			<div class="row">
-				@!component('components.widget_large', icon = 'image', valueId = 'maturity', description = 'Maturity')
+				@!component('components.feature_widget_large', icon = 'image', valueId = 'maturity', description = 'Maturity', placeholder = '...')
+			</div>
+
+			<hr>
+
+			@!component('components.page_title', title = 'Sample')
+			<div class="clearfix"></div>
+
+			<div class="row">
 				<div class="col-md-12 col-sm-12 col-xs-12">
-					@!component('components.media_gallery', id='photo', captionId='photo_timestamp', caption = 'No sample available')
+					@!component('components.media_gallery', id='photo', captionId='photo_timestamp', caption = 'No sample available', placeholder = 'Sample not found')
 				</div>
-			</div>	
+			</div>
 		</div>
 	</div>
+@endsection
+
+@section('custom_js')
+	<!-- Moment.js -->
+	{{ script('vendors/moment/min/moment.min.js') }}
+
+	<!-- Samples Websocket -->
+    {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+    {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+    {{ script('custom/js/samples_websocket.js') }}
 @endsection

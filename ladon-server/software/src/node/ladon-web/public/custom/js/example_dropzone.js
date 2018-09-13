@@ -1,13 +1,14 @@
 $(function() {
 
-	const canvas   = document.getElementById('processed_file')
-	const ctx      = canvas.getContext("2d")
-	const uploader = new Dropzone('.dropzone')
+	const processedPhoto 		= document.getElementById('processed_photo')
+	const processedPhotoCaption = document.getElementById('processed_photo_caption')
+	const uploader 		 		= new Dropzone('.dropzone')
 
 	uploader.on('success', function(file, response) {
 
-		const currentImage = new Image()
-		currentImage.src = `data:image/png;base64,${ response['draw_image'] }`
+		processedPhoto.src = `data:image/png;base64,${ response['draw_image'] }`
+		delete response['draw_image']
+		processedPhotoCaption.innerHTML = JSON.stringify(response)
 
 		// // Storing original canvas size
 		// const canvasWidth  = canvas.width
@@ -20,7 +21,7 @@ $(function() {
 		// canvas.height = currentImage.height
 
 		// Drawing image
-		ctx.drawImage(currentImage, 0, 0)
+		// ctx.drawImage(currentImage, 0, 0)
 
 		// // Drawing each circle
 		// const numberProcessedSamples = response['center_x'].length

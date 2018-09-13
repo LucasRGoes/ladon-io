@@ -12,12 +12,17 @@
 			<div class="clearfix"></div>
 
 			@!component('components.file_upload', id = 'file_upload', csrfField = csrfField())
+
+			<hr>
+
+			@!component('components.page_title', title = 'Processed Files')
 			<div class="clearfix"></div>
 
-			@!component('components.page_title', title = 'Processed File')
-			<div class="clearfix"></div>
-
-			@!component('components.uploaded_image', id = 'processed_file')
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					@!component('components.media_gallery', id='processed_photo', captionId='processed_photo_caption', caption = '',placeholder = 'Upload a photo to see the results of our image processing pipeline!')
+				</div>
+			</div>
 		</div>
 	</div>
 @endsection
@@ -26,6 +31,6 @@
 	<!-- Dropzone.js -->
     {{ script('vendors/dropzone/dist/min/dropzone.min.js') }}
 
-    <!-- Custom Dropzone Script -->
-    {{ script('custom/js/dropzone.js') }}
+    <!-- Example Dropzone -->
+    {{ script('custom/js/example_dropzone.js') }}
 @endsection

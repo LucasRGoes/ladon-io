@@ -88,32 +88,41 @@ class UserController {
 
 		const image = request.file('file', {
 			types: ['image'],
-			size: '2mb'
+			size: '5mb'
 		})
 
-		await image.move(Helpers.tmpPath('uploads'), {
-			name: 'example.jpg'
-		})
+		const fileName = image['stream']['filename']
+
+		await image.move( Helpers.tmpPath('uploads'), {
+			name: fileName
+		} )
 
 		if (!image.moved()) {
 			return image.error()
 		}
 
-		const filePath = Helpers.tmpPath('uploads/example.jpg')
+		const filePath = Helpers.tmpPath(`uploads/${ fileName }`)
 
 		let encodedFile = await Drive.get(filePath)
 		encodedFile = encodedFile.toString('base64')
 		await Drive.delete(filePath)
 
-		return await rp({
-			url: `${ Env.get('API_URL') }/process`,
-			method: 'POST',
-			headers: {
-				'Authorization': `Bearer ${ Env.get('API_KEY') }`,
-				'Accept': 'application/json'
-			},
-			json: { image: encodedFile }
-		})
+		console.log('teste')
+
+		try {
+			return await rp({
+				url: `${ Env.get('API_URL') }/process`,
+				method: 'POST',
+				headers: {
+					'Authorization': `Bearer ${ Env.get('API_KEY') }`,
+					'Accept': 'application/json'
+				},
+				json: { image: encodedFile }
+			})
+		} catch(err) {
+			console.log(err)
+			return {}
+		}
 
 	}
 

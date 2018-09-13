@@ -1,35 +1,33 @@
 @layout('layout.master')
 
+@section('custom_css')
+@endsection
+
 @section('content')
 	<div class="right_col" role="main">
 		<div>
-			<div class="page-title">
-				<div class="title_left">
-					<h3>Environment</h3>
-				</div>
-			</div>
-
+			@!component('components.page_title', title = 'Environment')
 			<div class="clearfix"></div>
 
 			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div>
                   		<div class="x_content">
                     		<div class="row">
-                    			@!component('components.widget', icon = 'fire', valueId = 'temperature', unity = '°C', description = 'Temperature', timestampId = 'temperature_timestamp')
-                    			@!component('components.widget', icon = 'tint', valueId = 'humidity', unity = '%', description = 'Humidity', timestampId = 'humidity_timestamp')
+                    			@!component('components.feature_widget', icon = 'fire', valueId = 'temperature', timestampId = 'temperature_timestamp', description = 'Temperature', placeholder = '...')
+                    			@!component('components.feature_widget', icon = 'tint', valueId = 'humidity', timestampId = 'humidity_timestamp', description = 'Humidity', placeholder = '...')
                    			</div>
                   		</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 					<div class="x_panel">
 						@!component('components.line_graph', description = 'Temperature', graphId = 'temperature_graph')
 					</div>
 				</div>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 					<div class="x_panel">
 						@!component('components.line_graph', description = 'Humidity', graphId = 'humidity_graph')
 					</div>
@@ -37,4 +35,19 @@
 			</div>	
 		</div>
 	</div>
+@endsection
+
+@section('custom_js')
+	<!-- Chart.js -->
+    {{ script('vendors/Chart.js/dist/Chart.min.js') }}
+	<!-- Moment.js -->
+	{{ script('vendors/moment/min/moment.min.js') }}
+
+	<!-- Environment Charts -->
+    {{ script('custom/js/environment_charts.js') }}
+
+	<!-- Environment Websocket -->
+    {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+    {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+    {{ script('custom/js/environment_websocket.js') }}
 @endsection

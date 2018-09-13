@@ -4,6 +4,14 @@ const aTagAsSubmitButton = () => {
 	document.getElementById('my_form').submit()
 }
 
+const requestData = (ws, channel, request, device = null, feature = null) => {
+	ws.getSubscription(channel).emit('message', {
+		request: request,
+		device: device,
+		feature: feature
+	})
+}
+
 const translateFeature = (feature) => {
 	switch(feature) {
 		case 1:

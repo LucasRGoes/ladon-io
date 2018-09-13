@@ -88,7 +88,7 @@ class UserController {
 
 		const image = request.file('file', {
 			types: ['image'],
-			size: '10mb'
+			size: '20mb'
 		})
 
 		const fileName = image['stream']['filename']

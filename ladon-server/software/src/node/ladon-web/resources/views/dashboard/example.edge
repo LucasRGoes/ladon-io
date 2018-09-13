@@ -23,6 +23,8 @@
 					@!component('components.media_gallery', id='processed_photo', captionId='processed_photo_caption', caption = '',placeholder = 'Upload a photo to see the results of our image processing pipeline!')
 				</div>
 			</div>
+
+			<canvas id="temp_drawing"></canvas>
 		</div>
 	</div>
 @endsection
@@ -30,6 +32,11 @@
 @section('custom_js')
 	<!-- Dropzone.js -->
     {{ script('vendors/dropzone/dist/min/dropzone.min.js') }}
+
+	<!-- Example Websocket -->
+	{{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+    {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+    {{ script('custom/js/example_websocket.js') }}
 
     <!-- Example Dropzone -->
     {{ script('custom/js/example_dropzone.js') }}

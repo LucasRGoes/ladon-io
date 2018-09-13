@@ -108,7 +108,7 @@ class UserController {
 		await Drive.delete(filePath)
 
 		try {
-			return await rp({
+			const response = await rp({
 				url: `${ Env.get('API_URL') }/process`,
 				method: 'POST',
 				headers: {
@@ -116,8 +116,14 @@ class UserController {
 				},
 				json: { image: encodedFile }
 			})
+
+			if('draw_image' in response) {
+				return response
+			} else {
+				return 'File too big for processing at our test pipeline!'
+			}
 		} catch(err) {
-			return `Error at processing: ${ JSON.stringify(err.response.body) }`
+			return 'File too big for processing at our test pipeline!'
 		}
 
 	}

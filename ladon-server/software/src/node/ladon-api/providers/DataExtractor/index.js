@@ -10,16 +10,18 @@ class DataExtractorService {
 
   	try {
 	  	let response = await spawn('python3', ['/usr/share/ladon/data-extractor/DataExtractor.py', encodedImage])
-	    
-	  	console.log(response)
-
+	  	
 	    // Cleaning procedures
 	    response = response.toString('utf8')
 	    response = JSON.parse(response)
 
 	    return response
 	} catch(err) {
-		return err.stderr.toString('utf8')
+		if('stderr' in err) {
+			return err.stderr.toString('utf8')
+		} else {
+			return err
+		}
 	}
 
   }

@@ -74,10 +74,10 @@ const subscribeToChannel = () => {
 	requestData(ws, 'ladon', 'time', 'vzyJYkThrw9u9gP5', 2) // Temperature
 
 	// Setting intervals for subsequent requests
-	setInterval(() => requestData(ws, 'ladon', 'last', 'vzyJYkThrw9u9gP5', 1), 60 * 1000) 		// 1 minute
-	setInterval(() => requestData(ws, 'ladon', 'time', 'vzyJYkThrw9u9gP5', 1), 60 * 60 * 1000) 	// 1 hour
-	setInterval(() => requestData(ws, 'ladon', 'last', 'vzyJYkThrw9u9gP5', 2), 60 * 1000) 		// 1 minute
-	setInterval(() => requestData(ws, 'ladon', 'time', 'vzyJYkThrw9u9gP5', 2), 60 * 60 * 1000) 	// 1 hour
+	setInterval(() => requestData(ws, 'ladon', 'last', 'vzyJYkThrw9u9gP5', 1), 60 * 1000) 	// 1 minute
+	setInterval(() => requestData(ws, 'ladon', 'time', 'vzyJYkThrw9u9gP5', 1), 60 * 1000) 	// 1 minute
+	setInterval(() => requestData(ws, 'ladon', 'last', 'vzyJYkThrw9u9gP5', 2), 60 * 1000) 	// 1 minute
+	setInterval(() => requestData(ws, 'ladon', 'time', 'vzyJYkThrw9u9gP5', 2), 60 * 1000) 	// 1 minute
 
 }
 

@@ -21,6 +21,7 @@ Route.get('/environment', 	  'UserController.environment').middleware('auth')
 Route.get('/samples',     	  'UserController.samples')    .middleware('auth')
 Route.get('/batches',         'UserController.batches')    .middleware('auth')
 Route.post('/batches',        'UserController.addBatch')   .middleware('auth')
+Route.get('/batches/last',    'UserController.lastBatch')  .middleware('auth')
 Route.get('/example',     	  'UserController.example')    .middleware('auth')
 
 /* OTHER ROUTES */

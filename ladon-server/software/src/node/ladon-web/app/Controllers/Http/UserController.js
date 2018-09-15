@@ -56,6 +56,10 @@ class UserController {
 		
 	}
 
+	async lastBatch({ request }) {
+		return await Batch.pickInverse(1)
+	}
+
 	async example({ request, view, auth }) {
 		request.user = await auth.getUser()
 		return view.render('dashboard.example')

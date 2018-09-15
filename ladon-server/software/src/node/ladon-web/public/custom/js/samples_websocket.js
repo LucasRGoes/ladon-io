@@ -39,6 +39,7 @@ const subscribeToChannel = () => {
 					switch(feature) {
 						case 'photo':
 							dashboardValue.setAttribute( 'src', `${ data.value.replace('/var/log/ladon/', '') }` )
+							dashboardTimestamp.innerHTML = moment(data.sentOn).fromNow()
 							break
 						case 'b_max':
 						case 'a_max':
@@ -48,7 +49,6 @@ const subscribeToChannel = () => {
 							lastExtractedData.extractedData[feature] = parseFloat(data.value)
 							break
 					}
-					dashboardTimestamp.innerHTML = moment(data.sentOn).fromNow()
 
 				}
 				break
@@ -60,9 +60,22 @@ const subscribeToChannel = () => {
 					
 					// Storing HTML element
 					const dashboardValue = document.getElementById('maturity')
+					const dashboardInfo  = document.getElementById('maturity_info')
 
 					// Setting value
 					dashboardValue.innerHTML = `${ data.maturity }`
+
+					// Requesting last batch
+					$.get('/batches/last', function( batchData ) {
+					
+						// Generating information based on maturity and batch
+						if(batchData.length > 0) {
+							dashboardInfo.innerHTML = generateInformation(data.maturity, batchData[0]['batch_start'], batchData[0]['batch_end'])
+						} else {
+							dashboardInfo.innerHTML = 'You have no batch registered on our database.'
+						}
+
+					})
 
 				}
 				break

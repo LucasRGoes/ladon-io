@@ -2,7 +2,7 @@ $(function () {
 
 	let firstCallback = false
 
-    const start = moment().subtract(6, 'days')
+    const start = moment().subtract(29, 'days')
     const end = moment()
 
     const cb = (start, end) => {

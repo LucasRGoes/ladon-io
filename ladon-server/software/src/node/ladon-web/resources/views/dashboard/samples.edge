@@ -10,7 +10,7 @@
 			<div class="clearfix"></div>
 
 			<div class="row">
-				@!component('components.feature_widget_large', icon = 'image', valueId = 'maturity', description = 'Maturity', placeholder = '...')
+				@!component('components.feature_widget_large', icon = 'image', valueId = 'maturity', description = 'Maturity', infoId = 'maturity_info', placeholder = '...')
 			</div>
 
 			<hr>
@@ -30,6 +30,9 @@
 @section('custom_js')
 	<!-- Moment.js -->
 	{{ script('vendors/moment/min/moment.min.js') }}
+
+    <!-- Samples Information -->
+    {{ script('custom/js/samples_info.js') }}
 
 	<!-- Samples Websocket -->
     {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}

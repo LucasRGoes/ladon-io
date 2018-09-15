@@ -4,6 +4,7 @@ const Drive   = use('Drive')
 const Env     = use('Env')
 const Logger  = use('Logger')
 const Helpers = use('Helpers')
+const Batch   = use('App/Models/Batch')
 const User    = use('App/Models/User')
 
 const rp = require('request-promise-native')
@@ -31,9 +32,28 @@ class UserController {
 		return view.render('dashboard.samples')
 	}
 
-	async batch({ request, view, auth }) {
+	async batches({ request, view, auth }) {
 		request.user = await auth.getUser()
-		return view.render('dashboard.batch')
+		return view.render('dashboard.batches', { submit: false })
+	}
+
+	async addBatch({ request, view, auth }) {
+		request.user = await auth.getUser()
+
+		const batchData = request.only(['batch_start', 'batch_end'])
+
+		batchData['batch_start'] = new Date(batchData['batch_start']).getTime()
+		batchData['batch_end']   = new Date(batchData['batch_end']).getTime()
+
+		try {
+			await Batch.create(batchData)
+			Logger.info(`Batch stored`)
+			return view.render('dashboard.batches', { submit: true, message: 'Your batch has been succesfully stored!' })
+		} catch (error) {
+			Logger.error(`Couldn't store batch`, error)
+			return view.render('dashboard.batches', { submit: true, message: 'Your batch couldn\'t be stored' })
+		}
+		
 	}
 
 	async example({ request, view, auth }) {

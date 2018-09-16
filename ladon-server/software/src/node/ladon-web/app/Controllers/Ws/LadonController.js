@@ -3,7 +3,7 @@
 const Env = use('Env')
 const Logger = use('Logger')
 
-const request = require('request');
+const request = require('request')
 
 class LadonController {
 
@@ -14,9 +14,9 @@ class LadonController {
 
     this.apiUrl = Env.get('API_URL')
     this.apiHeaders = {
-		'Authorization': `Bearer ${ Env.get('API_KEY') }`,
-		'Accept': 'application/json'
-	}
+      'Authorization': `Bearer ${ Env.get('API_KEY') }`,
+      'Accept': 'application/json',
+    }
 
     Logger.info(`Socket ${ this.socket.id } connected`)
 
@@ -24,7 +24,7 @@ class LadonController {
   
   onMessage (message) {
 
-  	Logger.info(`Socket ${ this.socket.id } requested: ${ message.request }`)
+  	Logger.info(`Socket ${ this.socket.id } requested: ${ JSON.stringify(message) }`)
 
   	// Preparing variables to be used
   	const socket = this.socket
@@ -40,13 +40,18 @@ class LadonController {
   			requestOptions.url += '/list'
   			break
   		case 'last':
-        requestOptions.url += `/id/${ message.id }/description/${ message.description }/last`
+        requestOptions.url += `/device/${ message.device }/feature/${ message.feature }/last`
   			break
   		case 'time':
-        const toT = Math.floor(Date.now() / 1000)
-        const fromT = toT - 3600
-        requestOptions.url += `/id/${ message.id }/description/${ message.description }?from=${ fromT }&to=${ toT }`
+        const toT = Math.floor(Date.now())
+        const fromT = toT - 3600000
+        requestOptions.url += `/device/${ message.device }/feature/${ message.feature }?from=${ fromT }&to=${ toT }`
   			break
+      case 'classify':
+        requestOptions.url += '/classify'
+        requestOptions.method = 'POST'
+        requestOptions.json = message.feature
+        break
 
   	}
 
@@ -59,7 +64,13 @@ class LadonController {
       }
 
       if (!error && response.statusCode == 200) {
-        answer.data = JSON.parse(body)
+
+        try {
+          answer.data = JSON.parse(body)
+        } catch(err) {
+          answer.data = body
+        }
+
       } else {
         answer.status = false
       }

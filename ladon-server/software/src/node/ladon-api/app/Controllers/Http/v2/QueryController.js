@@ -1,7 +1,11 @@
 'use strict'
 
-const Package = use('App/Models/PackageV2')
-const Logger = use('Logger')
+const Package            = use('App/Models/PackageV2')
+const Drive  			 = use('Drive')
+const Helpers 			 = use('Helpers')
+const Logger             = use('Logger')
+const RipeningClassifier = use('RipeningClassifier')
+const DataExtractor      = use('DataExtractor')
 
 class QueryController {
 
@@ -37,6 +41,35 @@ class QueryController {
 				} 
 			}
 		])
+
+	}
+
+	async process({ request }) {
+
+		// Stores classify parameters
+		const image = request.input('image')
+		Logger.info("Process requested")
+
+		await Drive.put( Helpers.tmpPath('uploads/toProcess.png'), Buffer.from(image, 'base64') )
+
+		const filePath = Helpers.tmpPath('uploads/toProcess.png')
+		const processedImage =  await DataExtractor.extract(filePath)
+		await Drive.delete(filePath)
+
+		return processedImage
+
+	}
+
+	async classify({ request }) {
+
+		// Stores classify parameters
+		const bMax = request.input('b_max')
+		const aMax = request.input('a_max')
+		const aMin = request.input('a_min')
+		const lMedian = request.input('L_median')
+		Logger.info("Classify requested")
+
+		return await RipeningClassifier.classify(bMax, aMax, aMin, lMedian)
 
 	}
 

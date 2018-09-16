@@ -34,6 +34,8 @@ Route
 		Route.get('device/:device/feature/:feature', 		'v2/QueryController.range')
 		Route.get('device/:device/feature/:feature/last', 	'v2/QueryController.last')
 		Route.get('list', 									'v2/QueryController.list')
+		Route.post('process',                               'v2/QueryController.process')
+		Route.post('classify',								'v2/QueryController.classify')
 
 	})
 	.prefix('api/v2')

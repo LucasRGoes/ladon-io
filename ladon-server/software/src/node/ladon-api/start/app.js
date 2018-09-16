@@ -1,5 +1,7 @@
 'use strict'
 
+const path = use('path')
+
 /*
 |--------------------------------------------------------------------------
 | Providers
@@ -16,7 +18,10 @@ const providers = [
   '@adonisjs/bodyparser/providers/BodyParserProvider',
   '@adonisjs/cors/providers/CorsProvider',
   '@adonisjs/lucid/providers/LucidProvider',
-  'adonis-4-mongoose/provider/Mongoose'
+  '@adonisjs/drive/providers/DriveProvider',
+  'adonis-4-mongoose/provider/Mongoose',
+  path.join(__dirname, '..', 'providers', 'RipeningClassifier/Provider'),
+  path.join(__dirname, '..', 'providers', 'DataExtractor/Provider')
 ]
 
 /*
@@ -45,7 +50,9 @@ const aceProviders = [
 |
 */
 const aliases = {
-	Mongoose: 'Adonis/Addons/AdonisMongoose'
+	Mongoose:            'Adonis/Addons/AdonisMongoose',
+	RipeningClassifier:  'Ladon/Addons/RipeningClassifier',
+  DataExtractor:       'Ladon/Addons/DataExtractor'
 }
 
 /*

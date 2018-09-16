@@ -15,11 +15,12 @@
         {{ css('vendors/font-awesome/css/font-awesome.min.css') }}
         <!-- NProgress -->
         {{ css('vendors/nprogress/nprogress.css') }}
-        <!-- bootstrap-progressbar -->
-        {{ css('vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}
 
         <!-- Custom Theme Style -->
         {{ css('build/css/custom.min.css') }}
+
+        <!-- Custom Content Style -->
+        @!section('custom_css')
     </head>
     <body class="nav-md">
         <div class="container body">
@@ -46,20 +47,12 @@
         {{ script('vendors/fastclick/lib/fastclick.js') }}
         <!-- NProgress -->
         {{ script('vendors/nprogress/nprogress.js') }}
-        <!-- Chart.js -->
-        {{ script('vendors/Chart.js/dist/Chart.min.js') }}
-        <!-- Moment.js -->
-        {{ script('vendors/moment/min/moment.min.js') }}
 
         <!-- Custom Theme Scripts -->
         {{ script('build/js/custom.min.js') }}
+        {{ script('custom/js/utils.js') }}
 
-        <!-- Custom Charts Script -->
-        {{ script('custom/js/charts.js') }}
-
-        <!-- Custom Websocket Script -->
-        {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
-        {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
-        {{ script('custom/js/websocket.js') }}
+        <!-- Custom Content Script -->
+        @!section('custom_js')
     </body>
 </html>

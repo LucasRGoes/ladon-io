@@ -1,7 +1,13 @@
 'use strict'
 
-const User = use('App/Models/User')
-const Logger = use('Logger')
+const Drive   = use('Drive')
+const Env     = use('Env')
+const Logger  = use('Logger')
+const Helpers = use('Helpers')
+const Batch   = use('App/Models/Batch')
+const User    = use('App/Models/User')
+
+const rp = require('request-promise-native')
 
 class UserController {
 
@@ -24,6 +30,39 @@ class UserController {
 	async samples({ request, view, auth }) {
 		request.user = await auth.getUser()
 		return view.render('dashboard.samples')
+	}
+
+	async batches({ request, view, auth }) {
+		request.user = await auth.getUser()
+		return view.render('dashboard.batches', { submit: false })
+	}
+
+	async addBatch({ request, view, auth }) {
+		request.user = await auth.getUser()
+
+		const batchData = request.only(['batch_start', 'batch_end'])
+
+		batchData['batch_start'] = new Date(batchData['batch_start']).getTime()
+		batchData['batch_end']   = new Date(batchData['batch_end']).getTime()
+
+		try {
+			await Batch.create(batchData)
+			Logger.info(`Batch stored`)
+			return view.render('dashboard.batches', { submit: true, message: 'Your batch has been succesfully stored!' })
+		} catch (error) {
+			Logger.error(`Couldn't store batch`, error)
+			return view.render('dashboard.batches', { submit: true, message: 'Your batch couldn\'t be stored' })
+		}
+		
+	}
+
+	async lastBatch({ request }) {
+		return await Batch.pickInverse(1)
+	}
+
+	async example({ request, view, auth }) {
+		request.user = await auth.getUser()
+		return view.render('dashboard.example')
 	}
 
 	async login({ request, response, auth }) {
@@ -65,6 +104,50 @@ class UserController {
 			Logger.error(`Couldn't create user ${email}`, error)
 		} finally {
 			response.redirect('/')
+		}
+
+	}
+
+	async upload({ request }) {
+
+		const image = request.file('file', {
+			types: ['image'],
+			size: '5mb'
+		})
+
+		const fileName = image['stream']['filename']
+
+		await image.move( Helpers.tmpPath('uploads'), {
+			name: fileName
+		} )
+
+		if (!image.moved()) {
+			return image.error()
+		}
+
+		const filePath = Helpers.tmpPath(`uploads/${ fileName }`)
+
+		let encodedFile = await Drive.get(filePath)
+		encodedFile = encodedFile.toString('base64')
+		await Drive.delete(filePath)
+
+		try {
+			const response = await rp({
+				url: `${ Env.get('API_URL') }/process`,
+				method: 'POST',
+				headers: {
+					'Authorization': `Bearer ${ Env.get('API_KEY') }`
+				},
+				json: { image: encodedFile }
+			})
+
+			if('draw_image' in response) {
+				return response
+			} else {
+				return 'File too big for processing at our test pipeline!'
+			}
+		} catch(err) {
+			return 'File too big for processing at our test pipeline!'
 		}
 
 	}

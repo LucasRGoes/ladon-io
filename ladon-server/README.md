@@ -1,6 +1,6 @@
-ladon-api
-=========
+ladon-server
+============
 
 ### About ###
 
-API for data consumption
+Server for data storage, API and web page implementation

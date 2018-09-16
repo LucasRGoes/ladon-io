@@ -1,0 +1,44 @@
+@layout('layout.master')
+
+@section('custom_css')
+	<!-- Dropzone.js -->
+	{{ css('vendors/dropzone/dist/min/dropzone.min.css') }}
+@endsection
+
+@section('content')
+	<div class="right_col" role="main">
+		<div>
+			@!component('components.page_title', title = 'Example')
+			<div class="clearfix"></div>
+
+			@!component('components.file_upload', id = 'file_upload', csrfField = csrfField())
+
+			<hr>
+
+			@!component('components.page_title', title = 'Processed Files')
+			<div class="clearfix"></div>
+
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					@!component('components.media_gallery', id='processed_photo', captionId='processed_photo_caption', caption = '',placeholder = 'Upload a photo to see the results of our image processing pipeline!')
+				</div>
+			</div>
+
+			<canvas id="temp_drawing" style="display: none;"></canvas>
+			<img id="temp_image" style="display: none;">
+		</div>
+	</div>
+@endsection
+
+@section('custom_js')
+	<!-- Dropzone.js -->
+    {{ script('vendors/dropzone/dist/min/dropzone.min.js') }}
+
+	<!-- Example Websocket -->
+	{{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+    {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+    {{ script('custom/js/example_websocket.js') }}
+
+    <!-- Example Dropzone -->
+    {{ script('custom/js/example_dropzone.js') }}
+@endsection

@@ -1,6 +1,6 @@
 /* Graphs */
 const temperatureCtx = document.getElementById('temperature_graph').getContext('2d')
-const humidityCtx = document.getElementById('humidity_graph').getContext('2d')
+const humidityCtx 	 = document.getElementById('humidity_graph').getContext('2d')
 
 const temperatureChart = new Chart(temperatureCtx, {
 	type: 'line',
@@ -30,7 +30,7 @@ const humidityChart = new Chart(humidityCtx, {
 	responsive: true
 })
 
-function updateChart(chart, labels, data) {
+const updateChart = (chart, labels, data) => {
 	chart.data.labels = labels
 	chart.data.datasets[0].data = data
 	chart.update()

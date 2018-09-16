@@ -18,6 +18,7 @@ const providers = [
   '@adonisjs/bodyparser/providers/BodyParserProvider',
   '@adonisjs/cors/providers/CorsProvider',
   '@adonisjs/lucid/providers/LucidProvider',
+  '@adonisjs/drive/providers/DriveProvider',
   'adonis-4-mongoose/provider/Mongoose',
   path.join(__dirname, '..', 'providers', 'RipeningClassifier/Provider'),
   path.join(__dirname, '..', 'providers', 'DataExtractor/Provider')

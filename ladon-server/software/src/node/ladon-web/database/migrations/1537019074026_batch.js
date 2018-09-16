@@ -6,8 +6,8 @@ class BatchSchema extends Schema {
   up () {
     this.create('batches', (table) => {
       table.increments()
-      table.timestamp('batch_start')
-      table.timestamp('batch_end')
+      table.timestamp('batch_start').defaultTo( this.fn.now() )
+      table.timestamp('batch_end').defaultTo( this.fn.now() )
       table.timestamps()
     })
   }

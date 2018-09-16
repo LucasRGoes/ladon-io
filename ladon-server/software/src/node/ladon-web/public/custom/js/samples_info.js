@@ -34,11 +34,11 @@ const generateInformation = (maturity, batchStart, batchEnd) => {
 
 	/* Procedures considering batch information */
 	if( currentDate.isBefore(batchStart) ) {
-		return 'Your batch hasn\'t started'
+		return 'Your batch hasn\'t started.'
 	}
 
 	if( currentDate.isSameOrAfter(batchEnd) ) {
-		return 'Your batch has ended'
+		return 'Your batch has ended.'
 	}
 
 	// Storing the number of days since the batch started and the number of days to the batch ending

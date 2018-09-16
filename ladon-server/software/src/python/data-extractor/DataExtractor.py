@@ -16,12 +16,10 @@ bMinThresh = 115
 bMaxThresh = 205
 
 # Stores image
-image = sys.argv[1]
+imageUrl = sys.argv[1]
 
-# Decoding image
-image = base64.b64decode( image )
-nparr = np.fromstring( image, np.uint8 )
-image = cv2.imdecode ( nparr, cv2.IMREAD_COLOR )
+# Reading image
+image = cv2.imread(imageUrl)
 
 # Instantiates a DataExtractor object for image processing
 dataExtractor = DataExtractor(aMinThresh, aMaxThresh, bMinThresh, bMaxThresh)

@@ -1,6 +1,8 @@
 'use strict'
 
 const Package            = use('App/Models/PackageV2')
+const Drive  			 = use('Drive')
+const Helpers 			 = use('Helpers')
 const Logger             = use('Logger')
 const RipeningClassifier = use('RipeningClassifier')
 const DataExtractor      = use('DataExtractor')
@@ -48,7 +50,13 @@ class QueryController {
 		const image = request.input('image')
 		Logger.info("Process requested")
 
-		return await DataExtractor.extract(image)
+		await Drive.put( Helpers.tmpPath('uploads/toProcess.png'), Buffer.from(image, 'base64') )
+
+		const filePath = Helpers.tmpPath('uploads/toProcess.png')
+		const processedImage =  await DataExtractor.extract(filePath)
+		await Drive.delete(filePath)
+
+		return processedImage
 
 	}
 

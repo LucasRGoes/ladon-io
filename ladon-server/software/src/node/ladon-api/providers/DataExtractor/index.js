@@ -6,10 +6,10 @@ class DataExtractorService {
 
   constructor () {}
 
-  async extract(encodedImage) {
+  async extract(imageUrl) {
 
   	try {
-	  	let response = await spawn('python3', ['/usr/share/ladon/data-extractor/DataExtractor.py', encodedImage])
+	  	let response = await spawn('python3', ['/usr/share/ladon/data-extractor/DataExtractor.py', imageUrl])
 	  	
 	    // Cleaning procedures
 	    response = response.toString('utf8')

@@ -1,0 +1,54 @@
+@layout('layout.master')
+
+@section('custom_css')
+	<!-- bootstrap-daterangepicker -->
+    {{ css('vendors/bootstrap-daterangepicker/daterangepicker.css') }}
+@endsection
+
+@section('content')
+	<div class="right_col" role="main">
+		<div>
+			<div class="page-title">
+				<div class="title_left">
+					<h3>Batch</h3>
+				</div>
+			</div>
+
+			<div class="clearfix"></div>
+
+			<div class="x_panel" style="">
+				<div class="x_content">
+					<div class="well" style="overflow: auto">
+						<div class="col-md-8">
+							<p>Select your current batch starting and ending days!</p>
+						</div>
+						<div class="col-md-4">
+							<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+								<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+								<span></span> <b class="caret"></b>
+							</div>
+							<form method='POST' id='batch_range'>
+								{{ csrfField() }}
+								<input type="hidden" id="from" name="batch_start"/>
+								<input type="hidden" id="to"   name="batch_end"/>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			@if(submit)
+				<h4>{{ message }}</h4>
+			@endif
+		</div>
+	</div>
+@endsection
+
+@section('custom_js')
+    <!-- bootstrap-daterangepicker -->
+    {{ script('vendors/moment/min/moment.min.js') }}
+    {{ script('vendors/bootstrap-daterangepicker/daterangepicker.js') }}
+
+	<!-- Batches Date Range Picker -->
+    {{ script('custom/js/batches_date_range_picker.js') }}
+@endsection

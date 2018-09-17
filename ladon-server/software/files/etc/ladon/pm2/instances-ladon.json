@@ -1,16 +1,16 @@
 {
   "apps": [
     {
-      "name": "kafka-file-wrapper",
+      "name": "mqtt-mongo-wrapper",
       "cwd": "/var/log/ladon",
       "script": "/usr/bin/python3.5",
       "args": [
-        "/usr/share/ladon/kafka-file-wrapper/KafkaFileWrapper.py",
+        "/usr/share/ladon/mqtt-mongo-wrapper/MqttMongoWrapper.py",
         "--mongo-password",
         "<password>"
       ],
       "watch": [
-        "/usr/share/ladon/kafka-file-wrapper/KafkaFileWrapper.py"
+        "/usr/share/ladon/mqtt-mongo-wrapper/MqttMongoWrapper.py"
       ],
       "node_args": [],
       "log_date_format": "YYYY-MM-DD HH:mm Z",

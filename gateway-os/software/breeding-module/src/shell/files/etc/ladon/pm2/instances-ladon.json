@@ -1,16 +1,14 @@
 {
   "apps": [
     {
-      "name": "tongue-module",
+      "name": "fang-module",
       "cwd": "/var/log/ladon",
       "script": "/usr/bin/python3.5",
       "args": [
-        "/usr/share/ladon/tongue-module/src/main.py",
-        "-k",
-        "<kafka-server>"
+        "/usr/share/ladon/fang-module/src/main.py"
       ],
       "watch": [
-        "/usr/share/ladon/tongue-module/src/main.py"
+        "/usr/share/ladon/fang-module/src/main.py"
       ],
       "node_args": [],
       "log_date_format": "YYYY-MM-DD HH:mm Z",

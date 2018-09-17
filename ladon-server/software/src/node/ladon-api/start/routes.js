@@ -20,10 +20,23 @@ const Route = use('Route')
 Route
 	.group(() => {
 
-		Route.get('id/:id/description/:description', 'QueryController.range')
-		Route.get('id/:id/description/:description/last', 'QueryController.last')
-		Route.get('list', 'QueryController.list')
+		Route.get('id/:id/description/:description', 		'v1/QueryController.range')
+		Route.get('id/:id/description/:description/last', 	'v1/QueryController.last')
+		Route.get('list', 									'v1/QueryController.list')
 
 	})
 	.prefix('api/v1')
+	.middleware(['auth'])
+
+Route
+	.group(() => {
+
+		Route.get('device/:device/feature/:feature', 		'v2/QueryController.range')
+		Route.get('device/:device/feature/:feature/last', 	'v2/QueryController.last')
+		Route.get('list', 									'v2/QueryController.list')
+		Route.post('process',                               'v2/QueryController.process')
+		Route.post('classify',								'v2/QueryController.classify')
+
+	})
+	.prefix('api/v2')
 	.middleware(['auth'])

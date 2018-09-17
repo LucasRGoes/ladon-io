@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Rate the maturity of your fruits here!</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <p>Drag your files to the box below for upload or click to select files. This is for demonstration purposes only, the files are not uploaded to any server.</p>
+        <form id={{ id }} action="/example/upload" class="dropzone">
+          {{ csrfField }}
+          <div class="fallback">
+            <input name="file" type="file" multiple />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
